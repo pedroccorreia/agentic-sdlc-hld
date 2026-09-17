@@ -24,7 +24,7 @@ echo "=========================================================="
 
 REPO_NAME="zip-presentation-repo"
 IMAGE_NAME="presentation-website"
-TAG="latest"
+TAG="v$(git rev-parse --short HEAD 2>/dev/null || echo 'release')-$(date +%Y%m%d%H%M%S)"
 IMAGE_URI="${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPO_NAME}/${IMAGE_NAME}:${TAG}"
 
 # 1. Enable Artifact Registry & Cloud Build / Cloud Run APIs
