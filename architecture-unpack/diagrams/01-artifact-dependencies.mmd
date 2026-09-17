@@ -1,0 +1,30 @@
+%% Artifact dependency graph — source: scan page 2, "DEP FOR ARTIFACTS"
+%% Solid arrows = production/derivation flow
+%% Dashed lines  = association with the Negotiation File (feedback attaches here)
+%% Edit this file, not the rendered image.
+
+graph LR
+    BRD["<b>BRD</b><br/><i>[external]</i>"]
+    PRD["<b>PRD</b><br/><i>[external]</i>"]
+    PA["<b>Project Assignment</b><br/><i>[internal]</i>"]
+    BR["<b>Build Report</b><br/><i>[external]</i>"]
+    FR["<b>Final Report</b><br/><i>[external]</i>"]
+    NF["<b>Negotiation File</b><br/><i>AKA Decision Registry</i><br/><i>[internal]</i>"]
+
+    BRD --> PRD
+    PRD --> PA
+    PA  --> FR
+    PA  --> BR
+
+    BRD -.-> NF
+    PRD -.-> NF
+    NF  -.-> PA
+    FR  -.-> NF
+
+    classDef ext      fill:#EAF2FF,stroke:#1A73E8,stroke-width:2px,color:#0B1F3B;
+    classDef internal fill:#FFF4E5,stroke:#F29900,stroke-width:2px,color:#3B2A00;
+    classDef ledger   fill:#F3E8FF,stroke:#8430CE,stroke-width:2px,color:#2A0B3B;
+
+    class BRD,PRD,BR,FR ext;
+    class PA internal;
+    class NF ledger;

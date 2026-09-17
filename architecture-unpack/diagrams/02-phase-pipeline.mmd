@@ -1,0 +1,29 @@
+%% The delivery phase pipeline, reconstructed from phase numbers scattered
+%% across scan pages 1 and 3.
+%%
+%% ATTESTED phases (written somewhere in the document):
+%%   (1) Specify   (2) Dispatch   (3) Generate
+%%   (5) Verify    (6) Ship & Observe   (7) Update Documentation
+%%
+%% Phase (4) is NEVER written down in any of the four pages.
+%% It is rendered below as an explicit gap, NOT guessed.
+%% See PARKING_LOT.md item PL-01.
+
+graph LR
+    P1["<b>(1) Specify</b><br/>produces BRD"]
+    P2["<b>(2) Dispatch</b><br/>produces PRD +<br/>Project Assignment"]
+    P3["<b>(3) Generate</b><br/>agents build"]
+    P4["<b>(4) ???</b><br/><i>not written down</i><br/><i>anywhere in the source</i>"]
+    P5["<b>(5) Verify</b><br/>build results"]
+    P6["<b>(6) Ship &amp; Observe</b>"]
+    P7["<b>(7) Update Documentation</b><br/><i>phase 6 sub-step, or<br/>parallel phase 7</i>"]
+
+    P1 -->|BRD| P2 --> P3 --> P4 --> P5 -->|build results| P6 --> P7
+
+    P7 -.->|"feeds context back in"| P1
+
+    classDef known   fill:#EAF2FF,stroke:#1A73E8,stroke-width:2px,color:#0B1F3B;
+    classDef unknown fill:#FFE9E9,stroke:#D93025,stroke-width:2px,stroke-dasharray:6 4,color:#5B0A05;
+
+    class P1,P2,P3,P5,P6,P7 known;
+    class P4 unknown;

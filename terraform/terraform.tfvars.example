@@ -1,0 +1,11 @@
+project_id                 = "ple-prototype"
+region                     = "australia-southeast1"
+service_name               = "zip-agentic-factory-presentation"
+artifact_registry_repo_id = "zip-presentation-repo"
+image_name                 = "presentation-website"
+image_tag                  = "latest"
+allow_unauthenticated      = true
+min_instances              = 0
+max_instances              = 10
+cpu_limit                  = "1000m"
+memory_limit               = "512Mi"

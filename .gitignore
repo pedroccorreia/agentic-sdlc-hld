@@ -1,0 +1,27 @@
+# macOS system files
+.DS_Store
+**/.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# PDF documents
+*.pdf
+**/*.pdf
+
+# Terraform & Cloud state/provider binaries
+.terraform/
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+
+# Temporary, tool & scratch files
+.ge_spark/
+sh-thd-*
+_work/
+__pycache__/
+*.py[cod]
+*.swp
+*.swo
+*~

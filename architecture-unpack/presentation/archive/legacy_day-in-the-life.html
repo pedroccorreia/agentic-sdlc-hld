@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zip Co · Day in the Life of the Factory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --zip-purple: #14002C;
+  --zip-purple-2: #240046;
+  --zip-purple-3: #3C096C;
+  --zip-iris: #7B2CBF;
+  --zip-violet: #8B32EB;
+  --zip-lime: #BEF202;
+  --zip-lime-dim: #98C400;
+  --zip-lime-glow: rgba(190, 242, 2, 0.35);
+  --zip-coral: #FF3366;
+  --zip-midnight: #0B0017;
+  --zip-surface: #180230;
+  --zip-card: #200440;
+  --zip-border: #381566;
+  --zip-text: #FFFFFF;
+  --zip-text-muted: #D3C7E8;
+  --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+body.theme-mono-bw {
+  --zip-purple: #000000 !important;
+  --zip-purple-2: #121212 !important;
+  --zip-purple-3: #222222 !important;
+  --zip-iris: #666666 !important;
+  --zip-violet: #555555 !important;
+  --zip-lime: #FFFFFF !important;
+  --zip-lime-dim: #DCDCDC !important;
+  --zip-lime-glow: rgba(255, 255, 255, 0.2) !important;
+  --zip-coral: #E0E0E0 !important;
+  --zip-midnight: #000000 !important;
+  --zip-surface: #101010 !important;
+  --zip-card: #181818 !important;
+  --zip-border: #333333 !important;
+  --zip-text: #FFFFFF !important;
+  --zip-text-muted: #A8A8A8 !important;
+  background: #000000 !important;
+  color: #FFFFFF !important;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--zip-midnight);
+  color: var(--zip-text);
+  font-family: var(--font-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+/* TOP APP HEADER */
+.top-header {
+  background: linear-gradient(90deg, #100024 0%, #1A0038 50%, #240046 100%);
+  border-bottom: 1px solid var(--zip-border);
+  padding: 0.85rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  z-index: 20;
+}
+.brand-group { display: flex; align-items: center; gap: 0.9rem; }
+.brand-logo { font-weight: 900; font-size: 1.6rem; letter-spacing: -0.04em; color: #FFF; line-height: 1; }
+.brand-logo span { color: var(--zip-lime); }
+.brand-tagline { font-size: 0.8rem; color: var(--zip-text-muted); font-weight: 600; }
+.top-controls { display: flex; align-items: center; gap: 0.8rem; }
+
+.badge-mini {
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.badge-lime { background: rgba(190, 242, 2, 0.15); color: var(--zip-lime); border: 1px solid var(--zip-lime-dim); }
+.badge-cyan { background: rgba(0, 212, 255, 0.15); color: #00D4FF; border: 1px solid #0099CC; }
+.badge-purple { background: rgba(168, 85, 247, 0.15); color: #D8B4FE; border: 1px solid #A855F7; }
+.badge-orange { background: rgba(249, 115, 22, 0.15); color: #FDBA74; border: 1px solid #EA580C; }
+
+/* THEME PILL SWITCHER */
+.theme-switcher-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  background: #17022C;
+  border: 1px solid #44177F;
+  border-radius: 20px;
+  padding: 0.2rem 0.4rem;
+}
+.theme-btn {
+  background: transparent;
+  border: none;
+  color: #B0A0CA;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border-radius: 14px;
+  cursor: pointer;
+}
+.theme-btn.active {
+  background: var(--zip-lime);
+  color: #000;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: #1F073D;
+  border: 1px solid #3D166F;
+  color: #FFF;
+  padding: 0.45rem 0.9rem;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+.btn:hover { border-color: var(--zip-lime); transform: translateY(-1px); }
+.btn-primary {
+  background: var(--zip-lime);
+  color: #000;
+  border-color: var(--zip-lime);
+}
+.btn-primary:hover { background: #AAFF00; box-shadow: 0 0 12px var(--zip-lime-glow); }
+
+/* PHASE & CONTROL BANNER */
+.control-banner {
+  background: linear-gradient(180deg, #180033 0%, #120026 100%);
+  border-bottom: 1px solid var(--zip-border);
+  padding: 0.9rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  z-index: 15;
+}
+
+.phase-stepper-track {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.3rem;
+}
+
+.phase-pill-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #1C0338;
+  border: 1px solid #381566;
+  border-radius: 20px;
+  padding: 0.35rem 0.85rem;
+  color: #C8B9E6;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.phase-pill-btn:hover {
+  border-color: var(--zip-lime);
+  color: #FFF;
+}
+.phase-pill-btn.active {
+  background: #3A0B66;
+  border-color: var(--zip-lime);
+  color: #FFF;
+  box-shadow: 0 0 12px rgba(190, 242, 2, 0.2);
+}
+.phase-pill-btn.active .dot {
+  background: var(--zip-lime);
+  box-shadow: 0 0 8px var(--zip-lime);
+}
+.phase-pill-btn .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #5A238A;
+  transition: all 0.2s ease;
+}
+
+.playback-controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.transport-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.speed-select, .step-select {
+  background: #17022C;
+  border: 1px solid #44177F;
+  border-radius: 6px;
+  color: #FFF;
+  font-size: 0.8rem;
+  font-family: var(--font-main);
+  padding: 0.4rem 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.progress-bar-container {
+  flex: 1;
+  max-width: 400px;
+  height: 6px;
+  background: #2B0A52;
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+.progress-bar-fill {
+  height: 100%;
+  width: 5.5%;
+  background: linear-gradient(90deg, #7B2CBF, var(--zip-lime));
+  transition: width 0.3s ease;
+}
+
+/* MAIN THREE-COLUMN CANVAS */
+.main-canvas {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 360px 1fr 340px;
+  gap: 1.2rem;
+  padding: 1.2rem 2rem;
+  max-width: 1920px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+@media (max-width: 1300px) {
+  .main-canvas {
+    grid-template-columns: 330px 1fr;
+  }
+  .intel-column {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 900px) {
+  .main-canvas {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+}
+
+.panel-card {
+  background: var(--zip-card);
+  border: 1px solid var(--zip-border);
+  border-radius: 12px;
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.35);
+  position: relative;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding-bottom: 0.65rem;
+}
+.panel-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #FFF;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  letter-spacing: -0.01em;
+}
+.panel-title span { color: var(--zip-lime); }
+
+/* AGENT CHOREOGRAPHY COLUMN */
+.agent-pair-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  position: relative;
+}
+
+.agent-node-card {
+  background: #16012B;
+  border: 1.5px solid #3F1570;
+  border-radius: 10px;
+  padding: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  transition: all 0.25s ease;
+}
+.agent-node-card.active-sender {
+  border-color: var(--zip-lime);
+  background: linear-gradient(135deg, #1C0338 0%, #2A0552 100%);
+  box-shadow: 0 0 15px rgba(190, 242, 2, 0.2);
+}
+.agent-node-card.active-receiver {
+  border-color: #00D4FF;
+  background: linear-gradient(135deg, #0E0024 0%, #17103E 100%);
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+}
+
+.agent-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: #25044A;
+  border: 1px solid #4D1A8A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+.active-sender .agent-avatar { border-color: var(--zip-lime); }
+.active-receiver .agent-avatar { border-color: #00D4FF; }
+
+.agent-meta { flex: 1; min-width: 0; }
+.agent-role-title { font-size: 0.72rem; text-transform: uppercase; color: var(--zip-text-muted); font-weight: 700; letter-spacing: 0.04em; }
+.agent-name { font-size: 0.95rem; font-weight: 800; color: #FFF; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.agent-family { font-size: 0.7rem; color: #A89BC2; }
+
+/* SVG SIGNAL RAIL */
+.signal-rail-wrapper {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.signal-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.signal-pulse-dot {
+  r: 5;
+  fill: var(--zip-lime);
+  filter: drop-shadow(0 0 6px var(--zip-lime));
+  animation: glidePulse 1.8s infinite ease-in-out;
+}
+@keyframes glidePulse {
+  0% { transform: translateY(0); opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translateY(38px); opacity: 0; }
+}
+
+/* SKILL BADGE CARD */
+.active-skill-box {
+  background: #140026;
+  border: 1px solid #3C166C;
+  border-radius: 8px;
+  padding: 0.75rem 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+.skill-info-group { display: flex; align-items: center; gap: 0.6rem; }
+.skill-icon { font-size: 1.2rem; }
+.skill-name-txt { font-size: 0.82rem; font-weight: 700; color: #FFF; }
+.skill-runtime-lbl { font-size: 0.68rem; color: #B5A8CE; font-family: var(--font-mono); }
+
+/* DIALOGUE / NEGOTIATION CHAT */
+.dialogue-feed-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 280px;
+  overflow-y: auto;
+  padding-right: 0.3rem;
+}
+.dialogue-bubble {
+  background: #17012E;
+  border: 1px solid #33135A;
+  border-radius: 8px;
+  padding: 0.75rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  animation: fadeIn 0.3s ease;
+}
+.dialogue-bubble.highlighted {
+  border-left: 3px solid var(--zip-lime);
+  background: #1B0235;
+}
+.dialogue-speaker {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--zip-lime);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.dialogue-time { font-size: 0.65rem; color: #9A8BB4; font-family: var(--font-mono); font-weight: 400; }
+.dialogue-body { font-size: 0.82rem; color: #E8E0F2; line-height: 1.45; }
+
+/* SIMULATED ARTIFACT ENGINE (CENTER) */
+.artifact-engine-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-height: 600px;
+}
+
+.artifact-doc-header {
+  background: linear-gradient(90deg, #180033 0%, #290452 100%);
+  border: 1px solid #44177F;
+  border-radius: 10px;
+  padding: 0.9rem 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+.doc-title-group { display: flex; align-items: center; gap: 0.7rem; }
+.doc-icon { font-size: 1.6rem; }
+.doc-name { font-size: 1.05rem; font-weight: 800; color: #FFF; font-family: var(--font-mono); }
+.doc-badge-group { display: flex; align-items: center; gap: 0.4rem; }
+
+.summary-card {
+  background: #130024;
+  border: 1px solid #381566;
+  border-left: 4px solid var(--zip-lime);
+  border-radius: 8px;
+  padding: 0.9rem 1.1rem;
+}
+.summary-title {
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--zip-lime);
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.summary-bullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.summary-bullets li {
+  font-size: 0.84rem;
+  color: #DDD4EC;
+  line-height: 1.4;
+  position: relative;
+  padding-left: 1.1rem;
+}
+.summary-bullets li::before {
+  content: "▹";
+  position: absolute;
+  left: 0;
+  color: var(--zip-lime);
+  font-weight: 900;
+}
+
+/* CODE / DOCUMENT PREVIEW BOX */
+.code-preview-wrapper {
+  background: #0D001C;
+  border: 1px solid #381566;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.code-preview-header {
+  background: #140029;
+  border-bottom: 1px solid #2B0A52;
+  padding: 0.45rem 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #A89BC2;
+  font-family: var(--font-mono);
+}
+.code-preview-body {
+  padding: 1rem;
+  margin: 0;
+  overflow: auto;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: #00D4FF;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  flex: 1;
+  max-height: 380px;
+}
+
+/* INVARIANTS STATUS RIBBON */
+.invariants-ribbon {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.5rem;
+}
+.invariant-item {
+  background: #140129;
+  border: 1px solid #3A146A;
+  border-radius: 6px;
+  padding: 0.5rem 0.7rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.inv-lbl { font-size: 0.65rem; color: #A89BC2; text-transform: uppercase; font-weight: 700; }
+.inv-val { font-size: 0.82rem; font-weight: 800; color: var(--zip-lime); font-family: var(--font-mono); display: flex; align-items: center; gap: 0.3rem; }
+
+/* PHASE INTEL & DEEP LINKS (RIGHT) */
+.intel-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.diamond-quadrant-card {
+  background: linear-gradient(135deg, #1C0338 0%, #2A0552 100%);
+  border: 1px solid #44177F;
+  border-radius: 10px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.diamond-tag { font-size: 0.7rem; text-transform: uppercase; font-weight: 800; color: #C084FC; letter-spacing: 0.05em; }
+.diamond-title { font-size: 1.05rem; font-weight: 900; color: #FFF; }
+.diamond-desc { font-size: 0.8rem; color: #D8CCE8; line-height: 1.45; }
+
+.links-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.deep-link-item {
+  background: #15002A;
+  border: 1px solid #35135E;
+  border-radius: 8px;
+  padding: 0.65rem 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.deep-link-item:hover {
+  background: #240244;
+  border-color: var(--zip-lime);
+  transform: translateX(2px);
+}
+.link-text-group { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
+.link-title { font-size: 0.82rem; font-weight: 700; color: #FFF; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.link-type { font-size: 0.65rem; color: #A89BC2; font-family: var(--font-mono); text-transform: uppercase; }
+.link-arrow { color: var(--zip-lime); font-size: 0.9rem; font-weight: 900; }
+
+/* MODAL VIEWER */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 0, 23, 0.88);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+.modal-overlay.active { display: flex; }
+.modal-card {
+  background: #180230;
+  border: 1px solid #5A238A;
+  border-radius: 12px;
+  max-width: 900px;
+  width: 100%;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+}
+.modal-header {
+  padding: 1rem 1.4rem;
+  border-bottom: 1px solid #381566;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal-body {
+  padding: 1.4rem;
+  overflow-y: auto;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: #00D4FF;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<!-- TOP APP HEADER -->
+<header class="top-header">
+  <div class="brand-group">
+    <div class="brand-logo">Zip <span>Factory</span></div>
+    <div style="border-left:1px solid #381566;height:24px;margin:0 .2rem"></div>
+    <div>
+      <div style="display:flex;align-items:center;gap:.5rem">
+        <span style="font-weight:800;font-size:.9rem;color:#FFF">Day in the Life of a Feature</span>
+        <span class="badge-mini badge-lime">Interactive Simulation</span>
+      </div>
+      <div class="brand-tagline">Project Catalyst · US Repayments Engine Modernization</div>
+    </div>
+  </div>
+
+  <div class="top-controls">
+    <a href="factory-explorer.html" class="btn" style="font-size:.78rem">🏠 Return to Explorer</a>
+    <div class="theme-switcher-pill">
+      <button class="theme-btn active" id="btnThemeDark" onclick="setAppTheme('dark')">🌙 Obsidian</button>
+      <button class="theme-btn" id="btnThemeMono" onclick="setAppTheme('mono-bw')">⚪ Mono B&amp;W</button>
+    </div>
+  </div>
+</header>
+
+<!-- PHASE STEPPER & PLAYBACK CONTROL BANNER -->
+<section class="control-banner">
+  <!-- 7 Macro Phases Bar -->
+  <div class="phase-stepper-track" id="phaseStepperTrack">
+    <!-- Rendered via JS -->
+  </div>
+
+  <!-- Playback transport controls -->
+  <div class="playback-controls-row">
+    <div class="transport-group">
+      <button class="btn" id="btnPrev" onclick="prevStep()" title="Previous Step (Left Arrow)">⏪ Prev</button>
+      <button class="btn btn-primary" id="btnPlayPause" onclick="togglePlayPause()" title="Play / Pause (Spacebar)">▶ Play Animation</button>
+      <button class="btn" id="btnNext" onclick="nextStep()" title="Next Step (Right Arrow)">Next ⏩</button>
+      <button class="btn" id="btnRestart" onclick="goToStep(1)" title="Restart from Step 1 (Key R)">↺ Restart</button>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:.8rem;flex:1;max-width:550px">
+      <span style="font-size:.78rem;font-weight:700;color:#C8B9E6;white-space:nowrap" id="stepCounterLabel">Step 1 of 18</span>
+      <div class="progress-bar-container">
+        <div class="progress-bar-fill" id="progressBarFill"></div>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:.6rem">
+      <label style="font-size:.75rem;color:#A89BC2;font-weight:600">Speed:</label>
+      <select class="speed-select" id="speedSelect" onchange="changeSpeed(this.value)">
+        <option value="0.5">0.5x</option>
+        <option value="1.0" selected>1.0x (3.5s)</option>
+        <option value="1.5">1.5x (2.2s)</option>
+        <option value="2.0">2.0x (1.5s)</option>
+      </select>
+
+      <label style="font-size:.75rem;color:#A89BC2;font-weight:600">Jump to:</label>
+      <select class="step-select" id="stepJumpSelect" onchange="goToStep(parseInt(this.value))">
+        <!-- Rendered via JS -->
+      </select>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN 3-COLUMN INTERACTIVE CANVAS -->
+<main class="main-canvas">
+
+  <!-- COLUMN 1: MULTI-AGENT CHOREOGRAPHY & LIVE DIALOGUE -->
+  <section class="panel-card">
+    <div class="panel-header">
+      <div class="panel-title">👥 Multi-Agent <span>Choreography</span></div>
+      <span class="badge-mini badge-cyan" id="phaseTagBadge">Phase 1: Specify</span>
+    </div>
+
+    <div class="agent-pair-container">
+      <!-- Sender Agent Card -->
+      <div class="agent-node-card active-sender" id="senderCard">
+        <div class="agent-avatar" id="senderAvatar">👔</div>
+        <div class="agent-meta">
+          <div class="agent-role-title">Sender Persona</div>
+          <div class="agent-name" id="senderName">Human Sponsor</div>
+          <div class="agent-family" id="senderFamily">Executive Leadership · L1</div>
+        </div>
+      </div>
+
+      <!-- Animated SVG Signal Rail -->
+      <div class="signal-rail-wrapper">
+        <svg class="signal-svg" viewBox="0 0 300 52">
+          <defs>
+            <linearGradient id="railGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#BEF202" />
+              <stop offset="100%" stop-color="#00D4FF" />
+            </linearGradient>
+          </defs>
+          <line x1="150" y1="4" x2="150" y2="48" stroke="url(#railGrad)" stroke-width="2.5" stroke-dasharray="4,4" />
+          <circle class="signal-pulse-dot" cx="150" cy="8" />
+        </svg>
+        <div style="position:absolute;background:#100022;border:1px solid #44177F;border-radius:12px;padding:2px 8px;font-size:.65rem;color:#D8CCE8;font-family:var(--font-mono);font-weight:700" id="signalTypeLabel">
+          SIGNAL_PACKET
+        </div>
+      </div>
+
+      <!-- Receiver Agent Card -->
+      <div class="agent-node-card active-receiver" id="receiverCard">
+        <div class="agent-avatar" id="receiverAvatar">🎯</div>
+        <div class="agent-meta">
+          <div class="agent-role-title">Receiver Persona</div>
+          <div class="agent-name" id="receiverName">Product Manager (A1)</div>
+          <div class="agent-family" id="receiverFamily">Family A: Intent · L2</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Skill Box -->
+    <div class="active-skill-box">
+      <div class="skill-info-group">
+        <div class="skill-icon">⚡</div>
+        <div>
+          <div class="skill-name-txt" id="skillNameTxt">Product Requirements Authoring</div>
+          <div class="skill-runtime-lbl" id="skillRuntimeLbl">Runtime: Tier A Sandbox</div>
+        </div>
+      </div>
+      <a href="#" id="skillDeepLink" target="_blank" rel="noopener noreferrer" class="badge-mini badge-lime" style="text-decoration:none">View Skill ↗</a>
+    </div>
+
+    <!-- Live Dialogue Feed -->
+    <div style="display:flex;flex-direction:column;gap:.5rem;flex:1">
+      <div style="font-size:.75rem;font-weight:800;color:#C8B9E6;text-transform:uppercase;letter-spacing:.04em;display:flex;justify-content:space-between">
+        <span>💬 Turn-by-Turn Dialogue</span>
+        <span style="color:#00D4FF;font-family:var(--font-mono);font-size:.65rem" id="dialogueHash">HASH: 7a9f...</span>
+      </div>
+      <div class="dialogue-feed-container" id="dialogueFeedContainer">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- COLUMN 2: SIMULATED ARTIFACT ENGINE -->
+  <section class="panel-card artifact-engine-card">
+    <div class="panel-header">
+      <div class="panel-title">📦 Simulated <span>Artifact Engine</span></div>
+      <div style="display:flex;gap:.5rem">
+        <button class="btn" onclick="openModalView()" style="font-size:.72rem;padding:.25rem .6rem">🔍 Expand</button>
+        <button class="btn" onclick="copyDocumentExcerpt()" style="font-size:.72rem;padding:.25rem .6rem">📋 Copy</button>
+      </div>
+    </div>
+
+    <!-- Active Document Header -->
+    <div class="artifact-doc-header">
+      <div class="doc-title-group">
+        <div class="doc-icon" id="docIcon">📄</div>
+        <div>
+          <div class="doc-name" id="docFilename">BRD-2026-US-REPAY-004.md</div>
+          <div style="font-size:.72rem;color:#C8B9E6;margin-top:2px" id="docArtifactKey">Artifact A · Business Requirements Document</div>
+        </div>
+      </div>
+      <div class="doc-badge-group">
+        <span class="badge-mini badge-lime" id="docStatusBadge">DRAFT_APPROVED</span>
+        <span class="badge-mini badge-purple" id="docFormatBadge">MARKDOWN</span>
+      </div>
+    </div>
+
+    <!-- Live Executive Summary -->
+    <div class="summary-card">
+      <div class="summary-title">💡 Document Takeaways &amp; Architectural Synthesis</div>
+      <ul class="summary-bullets" id="summaryBulletsList">
+        <!-- Rendered via JS -->
+      </ul>
+    </div>
+
+    <!-- Code / Document Preview Box -->
+    <div class="code-preview-wrapper">
+      <div class="code-preview-header">
+        <span id="previewHeaderLabel">Document Excerpt / Source Representation</span>
+        <span style="color:var(--zip-lime)" id="previewLanguageTag">Language: Markdown</span>
+      </div>
+      <pre class="code-preview-body" id="codePreviewBody"></pre>
+    </div>
+
+    <!-- Financial & Platform Invariant Status Ribbon -->
+    <div class="invariants-ribbon" id="invariantsRibbon">
+      <!-- Rendered via JS -->
+    </div>
+  </section>
+
+  <!-- COLUMN 3: PHASE INTEL & DEEP HYPERLINKS -->
+  <aside class="intel-column">
+
+    <!-- Double Diamond Subphase Card -->
+    <div class="diamond-quadrant-card">
+      <div class="diamond-tag" id="diamondTag">Double Diamond · Discover</div>
+      <div class="diamond-title" id="diamondTitle">Problem Space Discovery</div>
+      <div class="diamond-desc" id="diamondDesc">
+        Exhaustive contextual exploration across legacy C# AST repositories, statutory mandates, and customer ROI targets.
+      </div>
+    </div>
+
+    <!-- Phase Objective & Gate Card -->
+    <div class="panel-card" style="padding:1rem">
+      <div class="panel-title" style="font-size:.85rem">🛡️ Gate &amp; Autonomy <span>Governance</span></div>
+      <div style="font-size:.8rem;color:#E0D5F0;line-height:1.45" id="phaseGateText">
+        Human Gate 1: Eric Blassberg (Delivery Lead) Go/No-Go sign-off required prior to Stage 2 Dispatch.
+      </div>
+    </div>
+
+    <!-- Clickable Deep Links (Opening in new tabs) -->
+    <div class="panel-card" style="flex:1">
+      <div class="panel-header">
+        <div class="panel-title" style="font-size:.85rem">🔗 Deep <span>Hyperlinks</span></div>
+        <span class="badge-mini badge-lime" style="font-size:.62rem">Opens New Tab</span>
+      </div>
+      <div class="links-list-container" id="deepLinksList">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+
+  </aside>
+
+</main>
+
+<!-- FULL-SCREEN MODAL VIEWER -->
+<div class="modal-overlay" id="docModalOverlay" onclick="closeModalView(event)">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div style="font-weight:800;font-size:1rem;color:#FFF;display:flex;align-items:center;gap:.6rem">
+        <span>📄 Full Simulated Artifact Viewer:</span>
+        <span style="color:var(--zip-lime);font-family:var(--font-mono)" id="modalDocTitle">BRD-2026-US-REPAY-004.md</span>
+      </div>
+      <button class="btn" onclick="closeModalView()">✕ Close</button>
+    </div>
+    <pre class="modal-body" id="modalDocContent"></pre>
+  </div>
+</div>
+
+<!-- SCRIPTS: DECOUPLED DATA & INTERACTIVE ENGINE -->
+<script src="data/day_in_the_life_data.js"></script>
+<script>
+// ============================================================================
+// Interactive Click-by-Click Animation Engine
+// ============================================================================
+
+let currentStepIndex = 1;
+let isPlaying = false;
+let playTimer = null;
+let playbackSpeed = 1.0;
+const baseDelay = 3500; // 3.5 seconds per step at 1x
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (typeof dayInTheLifeData === "undefined") {
+    console.error("dayInTheLifeData not loaded!");
+    return;
+  }
+  initPhaseStepper();
+  initStepJumpSelect();
+  renderStep(1);
+
+  // Keyboard navigation
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowRight") {
+      nextStep();
+    } else if (e.key === "ArrowLeft") {
+      prevStep();
+    } else if (e.key === " ") {
+      e.preventDefault();
+      togglePlayPause();
+    } else if (e.key.toLowerCase() === "r") {
+      goToStep(1);
+    } else if (e.key === "Escape") {
+      closeModalView();
+    }
+  });
+});
+
+function initPhaseStepper() {
+  const track = document.getElementById("phaseStepperTrack");
+  track.innerHTML = "";
+  dayInTheLifeData.phases.forEach((p) => {
+    const btn = document.createElement("button");
+    btn.className = "phase-pill-btn" + (p.number === 1 ? " active" : "");
+    btn.id = "phaseBtn_" + p.number;
+    btn.onclick = () => goToStep(p.steps[0]);
+    btn.innerHTML = `<span class="dot"></span> <b>Phase ${p.number}:</b> ${p.name}`;
+    track.appendChild(btn);
+  });
+}
+
+function initStepJumpSelect() {
+  const sel = document.getElementById("stepJumpSelect");
+  sel.innerHTML = "";
+  dayInTheLifeData.steps.forEach((s) => {
+    const opt = document.createElement("option");
+    opt.value = s.step;
+    opt.textContent = `Step ${s.step}: ${s.title}`;
+    sel.appendChild(opt);
+  });
+}
+
+function renderStep(stepNumber) {
+  currentStepIndex = stepNumber;
+  const s = dayInTheLifeData.steps.find((x) => x.step === stepNumber);
+  if (!s) return;
+
+  // Update controls
+  document.getElementById("stepCounterLabel").textContent = `Step ${s.step} of ${dayInTheLifeData.steps.length}`;
+  const pct = ((s.step) / dayInTheLifeData.steps.length) * 100;
+  document.getElementById("progressBarFill").style.width = pct + "%";
+  document.getElementById("stepJumpSelect").value = s.step;
+
+  // Update Phase Stepper Pills
+  document.querySelectorAll(".phase-pill-btn").forEach((b) => b.classList.remove("active"));
+  const activePhaseBtn = document.getElementById("phaseBtn_" + s.phase);
+  if (activePhaseBtn) activePhaseBtn.classList.add("active");
+
+  document.getElementById("phaseTagBadge").textContent = `Phase ${s.phase}: ${s.phaseName}`;
+
+  // Update Multi-Agent Choreography
+  document.getElementById("senderAvatar").textContent = s.sender.avatar;
+  document.getElementById("senderName").textContent = s.sender.name;
+  document.getElementById("senderFamily").textContent = `${s.sender.family} · ${s.sender.rung}`;
+
+  document.getElementById("receiverAvatar").textContent = s.receiver.avatar;
+  document.getElementById("receiverName").textContent = s.receiver.name;
+  document.getElementById("receiverFamily").textContent = `${s.receiver.family} · ${s.receiver.rung}`;
+
+  document.getElementById("signalTypeLabel").textContent = s.signal.type;
+
+  // Active Skill
+  document.getElementById("skillNameTxt").textContent = s.skill.name;
+  document.getElementById("skillRuntimeLbl").textContent = "Runtime: " + s.skill.runtime;
+  document.getElementById("skillDeepLink").href = s.skill.ref;
+
+  // Dialogue Feed
+  const feed = document.getElementById("dialogueFeedContainer");
+  feed.innerHTML = "";
+  s.dialogue.forEach((d, idx) => {
+    const bub = document.createElement("div");
+    bub.className = "dialogue-bubble" + (idx === s.dialogue.length - 1 ? " highlighted" : "");
+    bub.innerHTML = `
+      <div class="dialogue-speaker">
+        <span>${d.speaker} <em style="font-weight:400;color:#A89BC2">(${d.role})</em></span>
+        <span class="dialogue-time">${d.time}</span>
+      </div>
+      <div class="dialogue-body">${d.text}</div>
+    `;
+    feed.appendChild(bub);
+  });
+  document.getElementById("dialogueHash").textContent = "HASH: " + (s.document.id.substring(0, 10));
+
+  // Simulated Document Engine
+  document.getElementById("docFilename").textContent = s.document.id;
+  document.getElementById("docArtifactKey").textContent = `Artifact ${s.document.artifactLetter} · ${s.document.artifactKey}`;
+  document.getElementById("docStatusBadge").textContent = s.document.status;
+  document.getElementById("docFormatBadge").textContent = s.document.format.toUpperCase();
+
+  const iconMap = { markdown: "📄", json: "📦", go: "💻", sql: "📊", yaml: "⚙️", text: "📋" };
+  document.getElementById("docIcon").textContent = iconMap[s.document.format] || "📄";
+
+  // Summary Takeaways
+  const bullets = document.getElementById("summaryBulletsList");
+  bullets.innerHTML = "";
+  s.document.summary.forEach((b) => {
+    const li = document.createElement("li");
+    li.textContent = b;
+    bullets.appendChild(li);
+  });
+
+  // Code Excerpt
+  document.getElementById("codePreviewBody").textContent = s.document.excerpt;
+  document.getElementById("previewLanguageTag").textContent = "Format: " + s.document.format.toUpperCase();
+
+  // Invariants Ribbon
+  const ribbon = document.getElementById("invariantsRibbon");
+  ribbon.innerHTML = "";
+  s.invariants.forEach((inv) => {
+    const item = document.createElement("div");
+    item.className = "invariant-item";
+    item.innerHTML = `
+      <div class="inv-lbl">${inv.label}</div>
+      <div class="inv-val"><span>✓</span> ${inv.status}</div>
+    `;
+    ribbon.appendChild(item);
+  });
+
+  // Right Column: Double Diamond & Phase Intel
+  document.getElementById("diamondTag").textContent = `Double Diamond · ${s.subphase}`;
+  document.getElementById("diamondTitle").textContent = s.title;
+  document.getElementById("diamondDesc").textContent = s.signal.summary;
+
+  const phaseObj = dayInTheLifeData.phases.find((p) => p.number === s.phase);
+  document.getElementById("phaseGateText").innerHTML = `
+    <b>${phaseObj.name} Gate:</b> ${phaseObj.humanGate}<br>
+    <span style="color:var(--zip-lime);font-size:.74rem;margin-top:.3rem;display:block">
+      <b>Active Mandate:</b> ${s.signal.label}
+    </span>
+  `;
+
+  // Deep Hyperlinks (target="_blank" in new tabs)
+  const linksBox = document.getElementById("deepLinksList");
+  linksBox.innerHTML = "";
+  s.links.forEach((l) => {
+    const a = document.createElement("a");
+    a.className = "deep-link-item";
+    a.href = l.url;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    a.innerHTML = `
+      <div class="link-text-group">
+        <div class="link-title">${l.label}</div>
+        <div class="link-type">${l.type}</div>
+      </div>
+      <div class="link-arrow">↗</div>
+    `;
+    linksBox.appendChild(a);
+  });
+}
+
+// Playback Transport Controls
+function nextStep() {
+  if (currentStepIndex < dayInTheLifeData.steps.length) {
+    renderStep(currentStepIndex + 1);
+  } else {
+    goToStep(1);
+  }
+}
+
+function prevStep() {
+  if (currentStepIndex > 1) {
+    renderStep(currentStepIndex - 1);
+  }
+}
+
+function goToStep(num) {
+  renderStep(num);
+}
+
+function togglePlayPause() {
+  isPlaying = !isPlaying;
+  const btn = document.getElementById("btnPlayPause");
+  if (isPlaying) {
+    btn.innerHTML = "⏸ Pause Animation";
+    btn.style.background = "#FF3366";
+    btn.style.borderColor = "#FF3366";
+    btn.style.color = "#FFF";
+    scheduleNextAutoStep();
+  } else {
+    btn.innerHTML = "▶ Play Animation";
+    btn.style.background = "var(--zip-lime)";
+    btn.style.borderColor = "var(--zip-lime)";
+    btn.style.color = "#000";
+    clearTimeout(playTimer);
+  }
+}
+
+function scheduleNextAutoStep() {
+  clearTimeout(playTimer);
+  if (!isPlaying) return;
+  const delay = baseDelay / playbackSpeed;
+  playTimer = setTimeout(() => {
+    if (!isPlaying) return;
+    nextStep();
+    scheduleNextAutoStep();
+  }, delay);
+}
+
+function changeSpeed(val) {
+  playbackSpeed = parseFloat(val);
+  if (isPlaying) scheduleNextAutoStep();
+}
+
+// Modal View
+function openModalView() {
+  const s = dayInTheLifeData.steps.find((x) => x.step === currentStepIndex);
+  if (!s) return;
+  document.getElementById("modalDocTitle").textContent = s.document.id;
+  document.getElementById("modalDocContent").textContent = s.document.excerpt;
+  document.getElementById("docModalOverlay").classList.add("active");
+}
+
+function closeModalView(e) {
+  document.getElementById("docModalOverlay").classList.remove("active");
+}
+
+function copyDocumentExcerpt() {
+  const text = document.getElementById("codePreviewBody").textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    alert("Document excerpt copied to clipboard!");
+  });
+}
+
+// Theme Switcher
+function setAppTheme(theme) {
+  if (theme === 'mono-bw') {
+    document.body.classList.add('theme-mono-bw');
+    document.getElementById('btnThemeMono').classList.add('active');
+    document.getElementById('btnThemeDark').classList.remove('active');
+  } else {
+    document.body.classList.remove('theme-mono-bw');
+    document.getElementById('btnThemeDark').classList.add('active');
+    document.getElementById('btnThemeMono').classList.remove('active');
+  }
+}
+</script>
+</body>
+</html>

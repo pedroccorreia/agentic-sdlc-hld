@@ -1,0 +1,1122 @@
+[
+  {
+    "id": "cloud_run_basics",
+    "name": "Cloud Run Sandbox Management",
+    "category": "GCP Compute & Sandboxes",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "cloud_run_byod",
+    "resource_ref": "https://github.com/google/skills/tree/main/cloud-run-basics",
+    "local_ref": "~/.gemini/config/skills/cloud-run-basics",
+    "acting_personas": [
+      "C1 Implementation Engineer",
+      "B3 Integration Engineer"
+    ],
+    "phases": [
+      3
+    ],
+    "is_mvp": true,
+    "description": "Provisions and executes isolated, disposable containers with custom Docker dependencies and network namespace isolation."
+  },
+  {
+    "id": "agent_platform_code_execution",
+    "name": "Agent Platform Managed Code Execution",
+    "category": "GCP Compute & Sandboxes",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "agent_platform_sandbox",
+    "resource_ref": "https://github.com/google/skills/tree/main/gemini-agents-api",
+    "local_ref": "~/.gemini/config/skills/gemini-agents-api",
+    "acting_personas": [
+      "C1 Implementation Engineer",
+      "C2 Isolated Test Engineer"
+    ],
+    "phases": [
+      3
+    ],
+    "is_mvp": true,
+    "description": "Google-managed zero-trust code execution sandbox with native network allowlists, Cloud Storage mounting, and Skill Registry integration."
+  },
+  {
+    "id": "gke_basics",
+    "name": "GKE Cluster Workload Operations",
+    "category": "GCP Compute & Sandboxes",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "cloud_run_byod",
+    "resource_ref": "https://github.com/google/skills/tree/main/gke-basics",
+    "local_ref": "~/.gemini/config/skills/gke-basics",
+    "acting_personas": [
+      "D5 SRE / Resilience",
+      "B1 Software Architect"
+    ],
+    "phases": [
+      2,
+      5,
+      6
+    ],
+    "is_mvp": true,
+    "description": "Manages core GKE cluster provisioning, kubectl credential fetching, Workload Identity binding, and control plane pods."
+  },
+  {
+    "id": "gke_app_onboarding",
+    "name": "GKE Application Deployment & Manifests",
+    "category": "GCP Compute & Sandboxes",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "https://github.com/google/skills/tree/main/gke-app-onboarding",
+    "local_ref": "~/.gemini/config/skills/gke-app-onboarding",
+    "acting_personas": [
+      "B1 Software Architect",
+      "C1 Implementation Engineer"
+    ],
+    "phases": [
+      3,
+      5
+    ],
+    "is_mvp": false,
+    "description": "Generates production Kubernetes manifests, Deployments, Services, ConfigMaps, and container migration templates."
+  },
+  {
+    "id": "gke_service_networking",
+    "name": "GKE Edge Networking & Traffic Routing",
+    "category": "GCP Compute & Sandboxes",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "cloud_run_byod",
+    "resource_ref": "https://github.com/google/skills/tree/main/gke-service-networking",
+    "local_ref": "~/.gemini/config/skills/gke-service-networking",
+    "acting_personas": [
+      "B3 Integration Engineer",
+      "D5 SRE / Resilience"
+    ],
+    "phases": [
+      5,
+      6
+    ],
+    "is_mvp": true,
+    "description": "Configures Gateway API, Container-Native Load Balancing (NEGs), Cloud Armor WAF policies, and traffic mirroring meshes."
+  },
+  {
+    "id": "gke_reliability",
+    "name": "GKE Workload Reliability & Probes",
+    "category": "GCP Compute & Sandboxes",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "https://github.com/google/skills/tree/main/gke-reliability",
+    "local_ref": "~/.gemini/config/skills/gke-reliability",
+    "acting_personas": [
+      "D5 SRE / Resilience"
+    ],
+    "phases": [
+      5
+    ],
+    "is_mvp": false,
+    "description": "Configures PodDisruptionBudgets (PDBs), liveness/readiness/startup health probes, and topology spread constraints."
+  },
+  {
+    "id": "cloud_build_basics",
+    "name": "Cloud Build CI/CD Pipeline Automation",
+    "category": "GCP Compute & Sandboxes",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "https://github.com/google/skills/tree/main/cloud-build-basics",
+    "local_ref": "~/.gemini/config/skills/cloud-build-basics",
+    "acting_personas": [
+      "B1 Software Architect",
+      "E3 Release & Change Manager"
+    ],
+    "phases": [
+      3,
+      5
+    ],
+    "is_mvp": true,
+    "description": "Automates container image compilation, automated test trigger execution, and artifact registry pushing."
+  },
+  {
+    "id": "cloud_sql_postgres_data",
+    "name": "Cloud SQL PostgreSQL Data Exploration & SQL",
+    "category": "GCP Databases & Storage",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "https://github.com/google/skills/tree/main/cloud-sql-postgres-data",
+    "local_ref": "~/.gemini/config/skills/cloud-sql-postgres-data",
+    "acting_personas": [
+      "B2 Data Architect",
+      "F2 Eval Engineer"
+    ],
+    "phases": [
+      2,
+      4,
+      7
+    ],
+    "is_mvp": true,
+    "description": "Explores schemas, verifies foreign keys, executes queries, and inspects execution plans on Cloud SQL."
+  },
+  {
+    "id": "cloud_sql_postgres_admin",
+    "name": "Cloud SQL PostgreSQL Provisioning & Config",
+    "category": "GCP Databases & Storage",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "cloud_run_byod",
+    "resource_ref": "https://github.com/google/skills/tree/main/cloud-sql-postgres-admin",
+    "local_ref": "~/.gemini/config/skills/cloud-sql-postgres-admin",
+    "acting_personas": [
+      "B2 Data Architect",
+      "B4 Identity & Access"
+    ],
+    "phases": [
+      1,
+      2
+    ],
+    "is_mvp": true,
+    "description": "Provisions Cloud SQL instances, creates databases/users, and manages flags for the scoring registry."
+  },
+  {
+    "id": "cloud_sql_postgres_monitor",
+    "name": "Cloud SQL Performance & Lock Troubleshooting",
+    "category": "GCP Databases & Storage",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "https://github.com/google/skills/tree/main/cloud-sql-postgres-monitor",
+    "local_ref": "~/.gemini/config/skills/cloud-sql-postgres-monitor",
+    "acting_personas": [
+      "B2 Data Architect",
+      "D5 SRE / Resilience"
+    ],
+    "phases": [
+      5,
+      6
+    ],
+    "is_mvp": false,
+    "description": "Diagnoses database locks, long-running queries, connection pooling saturation, and engine metrics."
+  },
+  {
+    "id": "spanner_basics",
+    "name": "Cloud Spanner Schema Design & Client Queries",
+    "category": "GCP Databases & Storage",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "https://github.com/google/skills/tree/main/spanner-basics",
+    "local_ref": "~/.gemini/config/skills/spanner-basics",
+    "acting_personas": [
+      "B2 Data Architect"
+    ],
+    "phases": [
+      1,
+      2
+    ],
+    "is_mvp": false,
+    "description": "Designs horizontally scalable schemas, interleaving hierarchies, primary keys, and transaction semantics on Spanner."
+  },
+  {
+    "id": "spanner_data",
+    "name": "Cloud Spanner Data Operations & Exploration",
+    "category": "GCP Databases & Storage",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "https://github.com/google/skills/tree/main/spanner-data",
+    "local_ref": "~/.gemini/config/skills/spanner-data",
+    "acting_personas": [
+      "B2 Data Architect",
+      "C3 Migration & Backfill"
+    ],
+    "phases": [
+      3,
+      5
+    ],
+    "is_mvp": false,
+    "description": "Executes distributed read/write SQL queries and schema object discovery across Spanner multi-region databases."
+  },
+  {
+    "id": "google_cloud_storage_basics",
+    "name": "Cloud Storage Artifact & Evidence Management",
+    "category": "GCP Databases & Storage",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "https://github.com/google/skills/tree/main/google-cloud-storage-basics",
+    "local_ref": "~/.gemini/config/skills/google-cloud-storage-basics",
+    "acting_personas": [
+      "D4 Regulatory Verifier",
+      "E2 Documentation Curator"
+    ],
+    "phases": [
+      1,
+      5,
+      7
+    ],
+    "is_mvp": true,
+    "description": "Stores and retrieves immutable auditor evidence packs, golden spec templates, and build reports in GCS."
+  },
+  {
+    "id": "google_cloud_storage_diagnostic",
+    "name": "Cloud Storage IAM & Permission Diagnostic",
+    "category": "GCP Databases & Storage",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "https://github.com/google/skills/tree/main/google-cloud-storage-diagnostic",
+    "local_ref": "~/.gemini/config/skills/google-cloud-storage-diagnostic",
+    "acting_personas": [
+      "B4 Identity & Access"
+    ],
+    "phases": [
+      2,
+      5
+    ],
+    "is_mvp": false,
+    "description": "Troubleshoots 403 Permission Denied errors, UBLA configurations, and bucket IAM service agent bindings."
+  },
+  {
+    "id": "bigquery_basics",
+    "name": "BigQuery Data Operations & Job Management",
+    "category": "GCP Analytics & Data",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "https://github.com/google/skills/tree/main/bigquery-basics",
+    "local_ref": "~/.gemini/config/skills/bigquery-basics",
+    "acting_personas": [
+      "D6 Reconciliation Analyst",
+      "F4 Token Economics"
+    ],
+    "phases": [
+      5,
+      6,
+      7
+    ],
+    "is_mvp": true,
+    "description": "Runs analytical queries, manages tables/views, and orchestrates query jobs for loan history analysis."
+  },
+  {
+    "id": "bigquery_sql",
+    "name": "BigQuery High-Performance SQL Optimization",
+    "category": "GCP Analytics & Data",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "https://github.com/google/skills/tree/main/bigquery-sql",
+    "local_ref": "~/.gemini/config/skills/bigquery-sql",
+    "acting_personas": [
+      "D6 Reconciliation Analyst",
+      "B2 Data Architect"
+    ],
+    "phases": [
+      5,
+      6
+    ],
+    "is_mvp": true,
+    "description": "Optimizes high-volume reconciliation queries comparing 3-year historical Azure loan ledgers against GCP."
+  },
+  {
+    "id": "bigquery_analytics",
+    "name": "BigQuery Automated Insights & Time-Series",
+    "category": "GCP Analytics & Data",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "https://github.com/google/skills/tree/main/bigquery-analytics",
+    "local_ref": "~/.gemini/config/skills/bigquery-analytics",
+    "acting_personas": [
+      "F4 Token Economics",
+      "D6 Reconciliation Analyst"
+    ],
+    "phases": [
+      6,
+      7
+    ],
+    "is_mvp": false,
+    "description": "Generates predictive unit cost forecasts, automated divergence trends, and anomaly detection."
+  },
+  {
+    "id": "cloud_logging_query_generation",
+    "name": "Cloud Logging LQL Query Generation",
+    "category": "GCP Observability & Telemetry",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "https://github.com/google/skills/tree/main/cloud-logging-query-generation",
+    "local_ref": "~/.gemini/config/skills/cloud-logging-query-generation",
+    "acting_personas": [
+      "E1 Observability Engineer",
+      "F4 Token Economics"
+    ],
+    "phases": [
+      3,
+      4,
+      6
+    ],
+    "is_mvp": true,
+    "description": "Generates Logging Query Language (LQL) queries to inspect sandbox container stdout, audit trails, and kill switch logs."
+  },
+  {
+    "id": "cloud_monitoring_promql_query",
+    "name": "Cloud Monitoring PromQL Metric Querying",
+    "category": "GCP Observability & Telemetry",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "https://github.com/google/skills/tree/main/cloud-monitoring-promql-query",
+    "local_ref": "~/.gemini/config/skills/cloud-monitoring-promql-query",
+    "acting_personas": [
+      "E1 Observability Engineer",
+      "D5 SRE / Resilience"
+    ],
+    "phases": [
+      5,
+      6
+    ],
+    "is_mvp": true,
+    "description": "Generates PromQL queries and aggregations across GKE microservices for latency SLOs and error budgets."
+  },
+  {
+    "id": "cloud_monitoring_metric_selection",
+    "name": "Cloud Monitoring Metric Discovery",
+    "category": "GCP Observability & Telemetry",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "https://github.com/google/skills/tree/main/cloud-monitoring-metric-selection",
+    "local_ref": "~/.gemini/config/skills/cloud-monitoring-metric-selection",
+    "acting_personas": [
+      "E1 Observability Engineer"
+    ],
+    "phases": [
+      1,
+      5,
+      6
+    ],
+    "is_mvp": false,
+    "description": "Discovers metric descriptors and resource parameters across Cloud Run, GKE, and Cloud SQL."
+  },
+  {
+    "id": "google_cloud_slo_alert_configuration",
+    "name": "Cloud SLO Alerting Policy Configuration",
+    "category": "GCP Observability & Telemetry",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "https://github.com/google/skills/tree/main/google-cloud-slo-alert-configuration",
+    "local_ref": "~/.gemini/config/skills/google-cloud-slo-alert-configuration",
+    "acting_personas": [
+      "D5 SRE / Resilience",
+      "E1 Observability Engineer"
+    ],
+    "phases": [
+      1,
+      5
+    ],
+    "is_mvp": true,
+    "description": "Generates Terraform alert policies for service level objectives (e.g. 99.99% ledger write availability)."
+  },
+  {
+    "id": "google_cloud_waf_security",
+    "name": "Google Cloud Well-Architected Security Review",
+    "category": "GCP Security & Governance",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "https://github.com/google/skills/tree/main/google-cloud-waf-security",
+    "local_ref": "~/.gemini/config/skills/google-cloud-waf-security",
+    "acting_personas": [
+      "D2 Security Red Team",
+      "B4 Identity & Access"
+    ],
+    "phases": [
+      1,
+      4,
+      5
+    ],
+    "is_mvp": true,
+    "description": "Evaluates architectures against Well-Architected Framework security principles (zero trust, encryption, least privilege)."
+  },
+  {
+    "id": "iam_helper_for_policy_simulator",
+    "name": "IAM Policy Simulator & Safety Verifier",
+    "category": "GCP Security & Governance",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "https://github.com/google/skills/tree/main/iam-helper-for-policy-simulator",
+    "local_ref": "~/.gemini/config/skills/iam-helper-for-policy-simulator",
+    "acting_personas": [
+      "B4 Identity & Access"
+    ],
+    "phases": [
+      2,
+      4
+    ],
+    "is_mvp": true,
+    "description": "Simulates proposed IAM v1 allow policy changes against historical logs before applying to prevent breaking workloads."
+  },
+  {
+    "id": "iam_helper_for_pam",
+    "name": "Privileged Access Manager (PAM) Lifecycle",
+    "category": "GCP Security & Governance",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "https://github.com/google/skills/tree/main/iam-helper-for-privileged-access-management",
+    "local_ref": "~/.gemini/config/skills/iam-helper-for-privileged-access-management",
+    "acting_personas": [
+      "B4 Identity & Access"
+    ],
+    "phases": [
+      2,
+      6
+    ],
+    "is_mvp": false,
+    "description": "Manages temporary, audited access elevations and approval workflows for shadow-gate operations."
+  },
+  {
+    "id": "google_cloud_recipe_auth",
+    "name": "Workload Identity & Authentication Recipes",
+    "category": "GCP Security & Governance",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "https://github.com/google/skills/tree/main/google-cloud-recipe-auth",
+    "local_ref": "~/.gemini/config/skills/google-cloud-recipe-auth",
+    "acting_personas": [
+      "B4 Identity & Access",
+      "C1 Implementation Engineer"
+    ],
+    "phases": [
+      2,
+      3
+    ],
+    "is_mvp": true,
+    "description": "Configures Workload Identity Federation, Service Account token minting, and ephemeral OAuth credential injection."
+  },
+  {
+    "id": "run_security_scanner",
+    "name": "Static Security Scanner (SAST & Secrets)",
+    "category": "GCP Security & Governance",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "agent_platform_sandbox",
+    "resource_ref": "https://github.com/google/skills/tree/main/run-security-scanner",
+    "local_ref": "~/.gemini/config/plugins/Google.securecoder.securecoder/skills/run_security_scanner",
+    "acting_personas": [
+      "D2 Security Red Team",
+      "D0 Systems Engineer (Human)"
+    ],
+    "phases": [
+      4
+    ],
+    "is_mvp": true,
+    "description": "Scans generated code for OWASP Top 10 vulnerabilities, hardcoded secrets, injection paths, and CWE issues."
+  },
+  {
+    "id": "scan_dependencies",
+    "name": "Dependency Safety & License Scanner",
+    "category": "GCP Security & Governance",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "agent_platform_sandbox",
+    "resource_ref": "https://github.com/google/skills/tree/main/scan_dependencies",
+    "local_ref": "~/.gemini/config/plugins/Google.securecoder.securecoder/skills/scan_dependencies",
+    "acting_personas": [
+      "B1 Software Architect",
+      "D2 Security Red Team"
+    ],
+    "phases": [
+      3,
+      4
+    ],
+    "is_mvp": true,
+    "description": "Validates third-party package dependencies for CVE vulnerabilities, licenses, and supply chain integrity."
+  },
+  {
+    "id": "agents_cli_onboarding",
+    "name": "Google Agents CLI Lifecycle & Benchmarking",
+    "category": "Agent Lifecycle & Operations",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "https://github.com/google/skills/tree/main/google-agents-cli-onboarding",
+    "local_ref": "~/.gemini/config/skills/google-agents-cli-onboarding",
+    "acting_personas": [
+      "F1 Persona Steward",
+      "F2 Eval Engineer"
+    ],
+    "phases": [
+      2,
+      4,
+      7
+    ],
+    "is_mvp": true,
+    "description": "Agent Development Kit (ADK) lifecycle: local execution, evaluation suites, benchmark scoring, and publishing."
+  },
+  {
+    "id": "gemini_api",
+    "name": "Vertex AI Gemini API Client Management",
+    "category": "Agent Lifecycle & Operations",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "https://github.com/google/skills/tree/main/gemini-api",
+    "local_ref": "~/.gemini/config/skills/gemini-api",
+    "acting_personas": [
+      "C1 Implementation Engineer",
+      "A5 Requirements Architect"
+    ],
+    "phases": [
+      1,
+      3
+    ],
+    "is_mvp": true,
+    "description": "Guides Google Gen AI SDK usage, structured outputs, multi-model tool calling, and caching on Vertex AI."
+  },
+  {
+    "id": "gemini_agents_api",
+    "name": "Gemini Enterprise Managed Agents Control Plane",
+    "category": "Agent Lifecycle & Operations",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "https://github.com/google/skills/tree/main/gemini-agents-api",
+    "local_ref": "~/.gemini/config/skills/gemini-agents-api",
+    "acting_personas": [
+      "F1 Persona Steward",
+      "CP Control Plane Engine"
+    ],
+    "phases": [
+      2,
+      7
+    ],
+    "is_mvp": true,
+    "description": "Provisions and configures stateful Agent resources, mounting Cloud Storage folders, skill registries, and MCP tools."
+  },
+  {
+    "id": "agent_platform_skill_registry",
+    "name": "Agent Platform Skill Registry Management",
+    "category": "Agent Lifecycle & Operations",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "https://github.com/google/skills/tree/main/agent-platform-skill-registry",
+    "local_ref": "~/.gemini/config/skills/agent-platform-skill-registry",
+    "acting_personas": [
+      "F1 Persona Steward",
+      "E2 Documentation Curator"
+    ],
+    "phases": [
+      2,
+      7
+    ],
+    "is_mvp": true,
+    "description": "Discovers, uploads, versions, and retrieves executable skills in the cloud-hosted Gemini Agent Platform registry."
+  },
+  {
+    "id": "google_antigravity_sdk",
+    "name": "Google Antigravity Multi-Agent Orchestration",
+    "category": "Agent Lifecycle & Operations",
+    "provider": "Google",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "https://github.com/google/skills/tree/main/google-antigravity-sdk",
+    "local_ref": "~/.gemini/config/plugins/google-antigravity-sdk/skills/google-antigravity-sdk",
+    "acting_personas": [
+      "CP Control Plane Engine",
+      "F3 Autonomy Rung Governor"
+    ],
+    "phases": [
+      2,
+      3,
+      4
+    ],
+    "is_mvp": true,
+    "description": "Orchestrates multi-agent pipelines, parallel subagents, task graph execution, and conversation state machines."
+  },
+  {
+    "id": "double_diamond_design",
+    "name": "Double Diamond Design Process",
+    "category": "SDLC & Engineering Governance",
+    "provider": "Zip",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "danhvb/my-ba-skills (skills-lock.json)",
+    "local_ref": ".agents/skills/double-diamond-design/SKILL.md",
+    "acting_personas": [
+      "A5 Requirements Architect",
+      "A1 Product Manager"
+    ],
+    "phases": [
+      1,
+      2
+    ],
+    "is_mvp": true,
+    "description": "Applies Double Diamond problem/solution space framing (Discover, Define, Develop, Deliver) to requirements and architecture."
+  },
+  {
+    "id": "loan_amortization_calculator",
+    "name": "Loan Amortization Calculation Engine",
+    "category": "Lending Domain Invariants",
+    "provider": "Zip",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "zip-repayments-plugin/skills/amortization",
+    "local_ref": ".agents/skills/loan-amortization-calculator/SKILL.md",
+    "acting_personas": [
+      "A2 Domain SME (Repayments)",
+      "C1 Implementation Engineer"
+    ],
+    "phases": [
+      1,
+      3,
+      4
+    ],
+    "is_mvp": true,
+    "description": "Calculates compounding interest schedules, periodic principal amortizations, and payoff amounts under Reg Z guidelines."
+  },
+  {
+    "id": "interest_accrual_validator",
+    "name": "Interest Accrual & Convention Validator",
+    "category": "Lending Domain Invariants",
+    "provider": "Zip",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "zip-repayments-plugin/skills/interest-accrual",
+    "local_ref": ".agents/skills/interest-accrual-validator/SKILL.md",
+    "acting_personas": [
+      "A2 Domain SME (Repayments)",
+      "D1 Spec Conformance Judge"
+    ],
+    "phases": [
+      1,
+      4,
+      6
+    ],
+    "is_mvp": true,
+    "description": "Verifies interest accrual methods (Actual/365, 30/360, Rule of 78s) and leap-year day-count conventions across jurisdictions."
+  },
+  {
+    "id": "delinquency_waterfall_checker",
+    "name": "Delinquency & Repayment Waterfall Allocator",
+    "category": "Lending Domain Invariants",
+    "provider": "Zip",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "zip-repayments-plugin/skills/waterfall",
+    "local_ref": ".agents/skills/delinquency-waterfall-checker/SKILL.md",
+    "acting_personas": [
+      "A2 Domain SME (Repayments)",
+      "C1 Implementation Engineer"
+    ],
+    "phases": [
+      1,
+      3,
+      5
+    ],
+    "is_mvp": true,
+    "description": "Validates exact payment cascade order: late fees -> accrued interest -> principal reduction under hardship plans."
+  },
+  {
+    "id": "merchant_fee_settler",
+    "name": "Merchant Fee & MDR Batch Settlement Engine",
+    "category": "Lending Domain Invariants",
+    "provider": "Zip",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "zip-merchant-plugin/skills/fee-settlement",
+    "local_ref": ".agents/skills/merchant-fee-settler/SKILL.md",
+    "acting_personas": [
+      "A2 Domain SME (Merchant Engine)",
+      "C1 Implementation Engineer"
+    ],
+    "phases": [
+      1,
+      3
+    ],
+    "is_mvp": false,
+    "description": "Simulates interchange fees, Merchant Discount Rate (MDR) deductions, and net settlement batch disbursements."
+  },
+  {
+    "id": "credit_decisioning_scorer",
+    "name": "Underwriting Decisioning & Policy Scorer",
+    "category": "Lending Domain Invariants",
+    "provider": "Zip",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "zip-decisioning-plugin/skills/underwriting-scorer",
+    "local_ref": ".agents/skills/credit-decisioning-scorer/SKILL.md",
+    "acting_personas": [
+      "A2 Domain SME (Decisioning)",
+      "C1 Implementation Engineer"
+    ],
+    "phases": [
+      1,
+      3
+    ],
+    "is_mvp": false,
+    "description": "Evaluates borrower risk tier, debt-to-income (DTI) bounds, and credit policy rules for instant loan origination."
+  },
+  {
+    "id": "double_entry_balance_checker",
+    "name": "Double-Entry Ledger Integrity Verifier",
+    "category": "Banking Ledger Integrity",
+    "provider": "Zip",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "zip-repayments-plugin/skills/double-entry",
+    "local_ref": ".agents/skills/double-entry-balance-checker/SKILL.md",
+    "acting_personas": [
+      "B2 Data Architect",
+      "D6 Reconciliation Analyst"
+    ],
+    "phases": [
+      1,
+      3,
+      5,
+      6
+    ],
+    "is_mvp": true,
+    "description": "Mathematical invariant prover verifying Debits equal Credits across all financial ledger transaction tables."
+  },
+  {
+    "id": "zero_cent_drift_prover",
+    "name": "Cent-for-Cent ($0.00) Ledger Drift Prover",
+    "category": "Banking Ledger Integrity",
+    "provider": "Zip",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "zip-repayments-plugin/skills/drift-prover",
+    "local_ref": ".agents/skills/zero-cent-drift-prover/SKILL.md",
+    "acting_personas": [
+      "D6 Reconciliation Analyst",
+      "B2 Data Architect"
+    ],
+    "phases": [
+      5,
+      6
+    ],
+    "is_mvp": true,
+    "description": "Automated reconciliation harness executing cent-for-cent balance comparisons between legacy Azure LMS and GCP microservices."
+  },
+  {
+    "id": "bitemporal_schema_auditor",
+    "name": "Bitemporal Ledger Schema Auditor",
+    "category": "Banking Ledger Integrity",
+    "provider": "Zip",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "zip-sdlc-plugin/skills/bitemporal-audit",
+    "local_ref": ".agents/skills/bitemporal-schema-auditor/SKILL.md",
+    "acting_personas": [
+      "B2 Data Architect"
+    ],
+    "phases": [
+      1,
+      2
+    ],
+    "is_mvp": true,
+    "description": "Validates schema adherence to valid-time (when business transaction occurred) and transaction-time (when written) models."
+  },
+  {
+    "id": "currency_precision_validator",
+    "name": "Currency Representation Precision Guard",
+    "category": "Banking Ledger Integrity",
+    "provider": "Zip",
+    "resource_status": "have_resource",
+    "execution_runtime": "agent_platform_sandbox",
+    "resource_ref": "zip-sdlc-plugin/skills/currency-precision",
+    "local_ref": ".agents/skills/currency-precision-validator/SKILL.md",
+    "acting_personas": [
+      "B2 Data Architect",
+      "D1 Spec Conformance Judge"
+    ],
+    "phases": [
+      3,
+      4
+    ],
+    "is_mvp": true,
+    "description": "AST scanner enforcing fixed-point decimals/integers (cents) and strictly banning IEEE-754 floating-point types for currency."
+  },
+  {
+    "id": "idempotent_backfill_designer",
+    "name": "Idempotent Data Migration & Backfill Engine",
+    "category": "Banking Ledger Integrity",
+    "provider": "Zip",
+    "resource_status": "have_resource",
+    "execution_runtime": "cloud_run_byod",
+    "resource_ref": "zip-repayments-plugin/skills/backfill-engine",
+    "local_ref": ".agents/skills/idempotent-backfill-designer/SKILL.md",
+    "acting_personas": [
+      "C3 Migration & Backfill",
+      "B2 Data Architect"
+    ],
+    "phases": [
+      3,
+      5,
+      6
+    ],
+    "is_mvp": true,
+    "description": "Authors and validates restartable, idempotent data migration pipelines importing 3-year historical loan books into GCP."
+  },
+  {
+    "id": "reg_z_tila_checker",
+    "name": "Truth in Lending Act (Reg Z) APR Checker",
+    "category": "Regulatory & Statutory Compliance",
+    "provider": "Zip",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "zip-compliance-plugin/skills/reg-z-checker",
+    "local_ref": ".agents/skills/reg-z-tila-checker/SKILL.md",
+    "acting_personas": [
+      "A3 Regulatory Analyst",
+      "D4 Regulatory Verifier"
+    ],
+    "phases": [
+      1,
+      5
+    ],
+    "is_mvp": true,
+    "description": "Validates statutory Truth in Lending Act APR disclosures, fee inclusion rules, and finance charge tolerance limits."
+  },
+  {
+    "id": "reg_b_ecoa_auditor",
+    "name": "Equal Credit Opportunity Act (Reg B) Auditor",
+    "category": "Regulatory & Statutory Compliance",
+    "provider": "Zip",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "zip-compliance-plugin/skills/reg-b-auditor",
+    "local_ref": ".agents/skills/reg-b-ecoa-auditor/SKILL.md",
+    "acting_personas": [
+      "A3 Regulatory Analyst",
+      "D4 Regulatory Verifier"
+    ],
+    "phases": [
+      1,
+      5
+    ],
+    "is_mvp": false,
+    "description": "Scans credit decisioning trees for disparate impact, prohibited criteria, and mandatory Adverse Action notice triggers."
+  },
+  {
+    "id": "fdcpa_disclosure_scanner",
+    "name": "Fair Debt Collection Practices Act (FDCPA) Scanner",
+    "category": "Regulatory & Statutory Compliance",
+    "provider": "Zip",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "zip-compliance-plugin/skills/fdcpa-scanner",
+    "local_ref": ".agents/skills/fdcpa-disclosure-scanner/SKILL.md",
+    "acting_personas": [
+      "A3 Regulatory Analyst",
+      "D4 Regulatory Verifier"
+    ],
+    "phases": [
+      1,
+      4,
+      5
+    ],
+    "is_mvp": true,
+    "description": "Enforces permissible contact hours, mandatory debt collection disclosures, and dispute notice timing in automated communications."
+  },
+  {
+    "id": "pci_dss_tokenization_verifier",
+    "name": "PCI DSS Cardholder Data Tokenization Verifier",
+    "category": "Regulatory & Statutory Compliance",
+    "provider": "Zip",
+    "resource_status": "have_resource",
+    "execution_runtime": "agent_platform_sandbox",
+    "resource_ref": "zip-compliance-plugin/skills/pci-dss-verifier",
+    "local_ref": ".agents/skills/pci-dss-tokenization-verifier/SKILL.md",
+    "acting_personas": [
+      "A3 Regulatory Analyst",
+      "D2 Security Red Team"
+    ],
+    "phases": [
+      1,
+      4,
+      5
+    ],
+    "is_mvp": true,
+    "description": "Scans code, logs, and database schemas to guarantee zero raw PAN/CVV cardholder data enters the application tier."
+  },
+  {
+    "id": "statutory_clause_mapper",
+    "name": "Statutory Clause-to-Code Traceability Mapper",
+    "category": "Regulatory & Statutory Compliance",
+    "provider": "Zip",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "zip-compliance-plugin/skills/clause-mapper",
+    "local_ref": ".agents/skills/statutory-clause-mapper/SKILL.md",
+    "acting_personas": [
+      "A3 Regulatory Analyst",
+      "A5 Requirements Architect"
+    ],
+    "phases": [
+      1,
+      5
+    ],
+    "is_mvp": true,
+    "description": "Generates the Regulatory Traceability Matrix mapping every PRD clause to federal/state lending statutes and GCS evidence."
+  },
+  {
+    "id": "zip_coding_standards_linter",
+    "name": "Zip SDLC Code Quality & Architectural Linter",
+    "category": "SDLC & Engineering Governance",
+    "provider": "Zip",
+    "resource_status": "have_resource",
+    "execution_runtime": "agent_platform_sandbox",
+    "resource_ref": "zip-sdlc-plugin/skills/house-linter",
+    "local_ref": ".agents/skills/zip-coding-standards-linter/SKILL.md",
+    "acting_personas": [
+      "C4 Skills Agent",
+      "C1 Implementation Engineer"
+    ],
+    "phases": [
+      3,
+      4
+    ],
+    "is_mvp": true,
+    "description": "Enforces Zip idiomatic Go/Python conventions, structured error handling, clean hexagonal boundaries, and zero code smell."
+  },
+  {
+    "id": "isolated_tdd_test_generator",
+    "name": "Spec-Derived Isolated TDD Test Authoring",
+    "category": "SDLC & Engineering Governance",
+    "provider": "Zip",
+    "resource_status": "have_resource",
+    "execution_runtime": "agent_platform_sandbox",
+    "resource_ref": "zip-sdlc-plugin/skills/isolated-tdd",
+    "local_ref": ".agents/skills/isolated-tdd-test-generator/SKILL.md",
+    "acting_personas": [
+      "C2 Isolated Test Engineer"
+    ],
+    "phases": [
+      2,
+      3
+    ],
+    "is_mvp": true,
+    "description": "Synthesizes comprehensive unit test suites strictly from PRD assertions with zero access to implementation source code."
+  },
+  {
+    "id": "ast_conformance_differ",
+    "name": "AST Spec Conformance Diff Analyzer",
+    "category": "SDLC & Engineering Governance",
+    "provider": "Zip",
+    "resource_status": "have_resource",
+    "execution_runtime": "agent_platform_sandbox",
+    "resource_ref": "zip-sdlc-plugin/skills/ast-diff",
+    "local_ref": ".agents/skills/ast-conformance-differ/SKILL.md",
+    "acting_personas": [
+      "D1 Spec Conformance Judge"
+    ],
+    "phases": [
+      4
+    ],
+    "is_mvp": true,
+    "description": "Parses generated code AST against PRD contract invariants, reporting both unimplemented requirements and unrequested code."
+  },
+  {
+    "id": "side_effect_suppression_filter",
+    "name": "Shadow Rail Side-Effect Suppression Filter",
+    "category": "SDLC & Engineering Governance",
+    "provider": "Zip",
+    "resource_status": "have_resource",
+    "execution_runtime": "cloud_run_byod",
+    "resource_ref": "zip-sdlc-plugin/skills/side-effect-filter",
+    "local_ref": ".agents/skills/side-effect-suppression-filter/SKILL.md",
+    "acting_personas": [
+      "D6 Reconciliation Analyst",
+      "D5 SRE / Resilience"
+    ],
+    "phases": [
+      6
+    ],
+    "is_mvp": true,
+    "description": "Network and proxy filter intercepting card payment rails and loan disbursements during live shadow mirroring to prevent dual debits."
+  },
+  {
+    "id": "shadow_divergence_classifier",
+    "name": "Shadow Gate Divergence Taxonomy Classifier",
+    "category": "SDLC & Engineering Governance",
+    "provider": "Zip",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "zip-sdlc-plugin/skills/divergence-classifier",
+    "local_ref": ".agents/skills/shadow-divergence-classifier/SKILL.md",
+    "acting_personas": [
+      "D6 Reconciliation Analyst",
+      "A2 Domain SME (x5)"
+    ],
+    "phases": [
+      6
+    ],
+    "is_mvp": true,
+    "description": "Triages shadow ledger differences into standard taxonomy: Class 1 (GCP bug), Class 2 (Legacy Azure bug), Class 3 (Rounding), Class 4 (Intentional)."
+  },
+  {
+    "id": "adr_extractor",
+    "name": "ADR Closed-Loop Knowledge Harvester",
+    "category": "SDLC & Engineering Governance",
+    "provider": "Zip",
+    "resource_status": "have_resource",
+    "execution_runtime": "agent_platform_sandbox",
+    "resource_ref": "zip-sdlc-plugin/skills/adr-harvester",
+    "local_ref": ".agents/skills/adr-extractor/SKILL.md",
+    "acting_personas": [
+      "E2 Documentation Curator",
+      "B1 Software Architect"
+    ],
+    "phases": [
+      4,
+      7
+    ],
+    "is_mvp": true,
+    "description": "Extracts resolved disputes from the Negotiation File and formalizes permanent Architecture Decision Records for the library."
+  },
+  {
+    "id": "autonomy_rung_evaluator",
+    "name": "Autonomy Rung Promotion & Demotion Governor",
+    "category": "SDLC & Engineering Governance",
+    "provider": "Zip",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "zip-governance-plugin/skills/rung-governor",
+    "local_ref": ".agents/skills/autonomy-rung-evaluator/SKILL.md",
+    "acting_personas": [
+      "F3 Autonomy Rung Governor"
+    ],
+    "phases": [
+      2,
+      4
+    ],
+    "is_mvp": true,
+    "description": "Monitors escaped defects and task class reliability, promoting tasks to L4 autonomy or demoting to mandatory L2 human review."
+  },
+  {
+    "id": "token_unit_cost_calculator",
+    "name": "Token Economics & Unit Cost Attribution",
+    "category": "SDLC & Engineering Governance",
+    "provider": "Zip",
+    "resource_status": "have_resource",
+    "execution_runtime": "universal_both",
+    "resource_ref": "zip-governance-plugin/skills/token-economics",
+    "local_ref": ".agents/skills/token-unit-cost-calculator/SKILL.md",
+    "acting_personas": [
+      "F4 Token Economics Analyst"
+    ],
+    "phases": [
+      3,
+      6,
+      7
+    ],
+    "is_mvp": true,
+    "description": "Calculates inference token expenditure, retry costs, and unit cost per spec across quarterly releases to prove compounding ROI."
+  }
+]

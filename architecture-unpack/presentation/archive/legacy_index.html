@@ -1,0 +1,1241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zip Agentic Factory — Architecture Storyline Presentation</title>
+<style>
+:root{
+  /* Zip Co Official Brand Palette */
+  --zip-purple:#14002C;         /* Zip Midnight Obsidian */
+  --zip-purple-2:#7B2CBF;       /* Zip Electric Iris / Violet */
+  --zip-purple-3:#8B32EB;       /* Zip Bright Orchid */
+  --zip-purple-deep:#240046;    /* Zip Dark Plum Surface */
+  --zip-lime:#BEF202;           /* Zip Signature Electric Neo-Lime */
+  --zip-lime-bright:#AAFF00;    /* Zip Vivid Chartreuse */
+  --zip-lime-dim:#94BD02;       /* Zip Lime Dark */
+  --zip-lime-glow:rgba(190, 242, 2, 0.35);
+  --zip-violet-glow:rgba(123, 44, 191, 0.35);
+  --zip-coral:#FF3366;          /* Zip Coral Pink */
+  --ink:#14002C;
+  --ink-soft:#382554;
+  --paper:#FFFFFF;
+  --paper-elevated:#FAF8FE;
+  --muted:#685880;
+  --muted-light:#9B90B2;
+  --line:#E5DBF3;
+  --line-dark:#3A1463;
+
+  /* semantic conventions used consistently across every diagram */
+  --ext:#EEF4FF;      --ext-b:#2563EB;   --ext-t:#1E3A8A;
+  --int:#FFF7ED;      --int-b:#EA580C;   --int-t:#7C2D12;
+  --ledger:#F5EEFF;   --ledger-b:#7B2CBF;--ledger-t:#3C096C;
+  --gcp:#ECFDF5;      --gcp-b:#059669;   --gcp-t:#064E3B;
+  --gap:#FFF1F2;      --gap-b:#E11D48;   --gap-t:#881337;
+  --gate:#FDF4FF;     --gate-b:#C026D3;  --gate-t:#701A75;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  background:var(--zip-purple);color:var(--ink);
+  overflow:hidden;-webkit-font-smoothing:antialiased;
+}
+#deck{position:relative;width:100vw;height:100vh}
+.slide{
+  position:absolute;inset:0;display:none;
+  flex-direction:column;
+  padding:4.2vh 5vw 8vh;
+  background:var(--paper);
+  overflow:auto;
+}
+.slide.active{display:flex;animation:fade .28s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ---------- typography ---------- */
+h1{font-size:clamp(30px,4.4vw,62px);line-height:1.05;letter-spacing:-.02em;color:var(--zip-purple)}
+h2{font-size:clamp(23px,2.9vw,40px);line-height:1.12;letter-spacing:-.015em;color:var(--zip-purple);margin-bottom:.5em}
+h3{font-size:clamp(15px,1.35vw,20px);color:var(--zip-purple-2);margin-bottom:.45em}
+p,li,td,th{font-size:clamp(12.5px,1.13vw,17px);line-height:1.5}
+.lede{font-size:clamp(14px,1.35vw,21px);color:var(--muted);max-width:60em;margin-bottom:1.1em;line-height:1.45}
+.kicker{
+  display:inline-block;font-size:clamp(9.5px,.78vw,12px);font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--zip-purple-3);
+  border-bottom:2px solid var(--zip-lime);padding-bottom:3px;margin-bottom:1.1em;
+}
+strong{color:var(--zip-purple)}
+code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:.87em;background:#F4F1FA;border:1px solid var(--line);
+  border-radius:4px;padding:1px 5px;color:var(--zip-purple-2);
+}
+em{color:var(--muted)}
+a{color:var(--zip-purple-2)}
+
+/* ---------- title slide ---------- */
+.title-slide{
+  background:linear-gradient(140deg,var(--zip-purple) 0%,var(--zip-purple-2) 62%,var(--zip-purple-3) 100%);
+  justify-content:center;color:#fff;
+}
+.title-slide h1{color:#fff;max-width:17em}
+.title-slide .lede{color:#D9CEEE}
+.title-slide .kicker{color:var(--zip-lime);border-color:var(--zip-lime)}
+.title-meta{margin-top:2.4em;display:flex;gap:2.6em;flex-wrap:wrap;color:#CDBFE6;font-size:clamp(11px,.95vw,14px)}
+.title-meta b{color:var(--zip-lime);display:block;font-size:1.5em;margin-bottom:.15em;font-weight:700}
+.lime-rule{width:76px;height:5px;background:var(--zip-lime);border-radius:3px;margin:1.5em 0}
+
+/* ---------- layout helpers ---------- */
+.body{flex:1;min-height:0}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:2vw;align-items:start}
+.cols3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4vw;align-items:start}
+.cols4{display:grid;grid-template-columns:repeat(4,1fr);gap:1.1vw;align-items:start}
+.scroll{overflow:auto}
+
+/* ---------- cards ---------- */
+.card{
+  background:#FBFAFE;border:1px solid var(--line);border-left:4px solid var(--zip-purple-3);
+  border-radius:9px;padding:.95em 1.15em;
+}
+.card h3{margin-bottom:.3em}
+.card p{color:#3F3557}
+.card.lime{border-left-color:var(--zip-lime-dim)}
+.card.gap{border-left-color:var(--gap-b);background:#FFF7F7}
+.card.gap h3{color:var(--gap-t)}
+.card.good{border-left-color:var(--gcp-b);background:#F5FBF7}
+.card.good h3{color:var(--gcp-t)}
+.num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:1.75em;height:1.75em;border-radius:50%;
+  background:var(--zip-purple);color:var(--zip-lime);
+  font-weight:700;font-size:.85em;margin-right:.5em;flex:none;
+}
+
+/* ---------- tables ---------- */
+table{border-collapse:collapse;width:100%;margin:.35em 0}
+th,td{text-align:left;padding:.44em .6em;border-bottom:1px solid var(--line);vertical-align:top}
+th{
+  color:var(--zip-purple);font-weight:700;font-size:.82em;
+  text-transform:uppercase;letter-spacing:.06em;
+  border-bottom:2px solid var(--zip-purple-3);white-space:nowrap;
+}
+tbody tr:hover{background:#FBFAFE}
+td.nowrap{white-space:nowrap}
+
+/* ---------- pills / tags ---------- */
+.pill{
+  display:inline-block;padding:.12em .6em;border-radius:99px;
+  font-size:.76em;font-weight:700;letter-spacing:.03em;white-space:nowrap;
+}
+.pill.ext{background:var(--ext);color:var(--ext-t);border:1px solid var(--ext-b)}
+.pill.int{background:var(--int);color:var(--int-t);border:1px solid var(--int-b)}
+.pill.led{background:var(--ledger);color:var(--ledger-t);border:1px solid var(--ledger-b)}
+.pill.gcp{background:var(--gcp);color:var(--gcp-t);border:1px solid var(--gcp-b)}
+.pill.gap{background:var(--gap);color:var(--gap-t);border:1px solid var(--gap-b)}
+.pill.good{background:#E6F4EA;color:#137333;border:1px solid #1E8E3E}
+
+/* ---------- callout ---------- */
+.callout{
+  border-left:4px solid var(--zip-lime);background:#FAFCEF;
+  padding:.8em 1.1em;border-radius:0 8px 8px 0;margin:.7em 0;
+}
+.callout.warn{border-left-color:var(--gap-b);background:#FFF6F6}
+.callout.warn b{color:var(--gap-t)}
+.callout.lime{border-left-color:var(--zip-lime);background:#F6FDE8}
+.callout p{color:#3F3557}
+
+/* ---------- lists ---------- */
+ul.clean{list-style:none}
+ul.clean li{padding:.24em 0 .24em 1.25em;position:relative}
+ul.clean li::before{
+  content:"";position:absolute;left:.35em;top:.7em;
+  width:5px;height:5px;border-radius:50%;background:var(--zip-purple-3);
+}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;gap:.4em;
+  padding:.45em .95em;border-radius:7px;
+  background:var(--zip-purple);color:#fff;
+  border:1px solid var(--zip-purple);font-weight:600;
+  font-size:.85em;cursor:pointer;transition:all .15s ease;
+  text-decoration:none;
+}
+.btn:hover{background:var(--zip-purple-2);border-color:var(--zip-purple-2)}
+.btn-primary{background:var(--zip-lime);color:var(--zip-purple);border-color:var(--zip-lime)}
+.btn-primary:hover{background:var(--zip-lime-bright);border-color:var(--zip-lime-bright)}
+
+/* ---------- chrome & navigation ---------- */
+#top-nav{
+  position:fixed;top:0;left:0;right:0;height:58px;
+  background:#0E0020;border-bottom:1.5px solid #36155F;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 1.5rem;z-index:100;backdrop-filter:blur(10px);
+}
+.zip-brand-wrap{display:flex;align-items:center;gap:.65rem}
+.zip-logo-mark{font-weight:900;font-size:1.4rem;color:#FFF;letter-spacing:-.04em}
+.zip-logo-mark .dot{color:var(--zip-lime)}
+.zip-brand-pill{
+  background:linear-gradient(135deg, #7B2CBF, #9D4EDD);color:#FFF;
+  font-size:.7rem;font-weight:700;padding:.15rem .5rem;border-radius:4px;
+  letter-spacing:.05em;text-transform:uppercase;
+}
+.zip-title-text{color:#C5B8DD;font-size:.84rem;margin-left:.3rem}
+.btn-mode{
+  background:transparent;border:1.5px solid #44177F;color:#D8CCE8;
+  padding:.35rem .85rem;border-radius:20px;font-size:.8rem;font-weight:600;
+  cursor:pointer;transition:all .15s ease;
+}
+.btn-mode:hover{border-color:var(--zip-purple-2);color:#FFF}
+.btn-mode.active{background:var(--zip-purple-2);border-color:var(--zip-purple-2);color:#FFF}
+
+#factory-explorer-view{
+  position:fixed;top:58px;left:0;right:0;bottom:0;
+  background:#0A0016;z-index:90;display:none;
+}
+body.explorer-active #factory-explorer-view{display:block}
+body.explorer-active #deck,
+body.explorer-active #chrome,
+body.explorer-active #bar,
+body.explorer-active #slug{display:none}
+
+#bar{position:fixed;left:0;bottom:0;height:4px;background:var(--zip-lime);width:0;transition:width .28s ease;z-index:40}
+#slug{position:fixed;left:1.5rem;bottom:1.1rem;font-size:.75rem;color:#A89BC2;font-weight:600;letter-spacing:.06em;text-transform:uppercase;z-index:40}
+#chrome{
+  position:fixed;right:1.5rem;bottom:1rem;display:flex;align-items:center;gap:.6rem;
+  z-index:40;background:rgba(14,0,32,0.85);padding:.35rem .75rem;border-radius:30px;
+  border:1px solid #36155F;backdrop-filter:blur(8px);
+}
+#chrome button{
+  background:transparent;border:none;color:#FFF;font-size:1.1rem;cursor:pointer;
+  width:1.8rem;height:1.8rem;display:flex;align-items:center;justify-content:center;
+  border-radius:50%;transition:background .15s;
+}
+#chrome button:hover{background:#36155F}
+#count{font-size:.78rem;color:#D8CCE8;font-weight:700;padding:0 .3rem}
+
+/* Overview grid */
+#ov{
+  display:none;position:fixed;inset:0;background:rgba(10,0,22,0.94);
+  z-index:200;overflow:auto;padding:4rem 3rem 3rem;
+}
+body.ov-on #ov{display:block}
+#ov h2{color:#FFF;margin-bottom:1.5rem}
+.ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:1rem}
+.ov-item{
+  background:#17022C;border:1.5px solid #44177F;border-radius:8px;padding:1rem;
+  color:#D8CCE8;font-size:.82rem;cursor:pointer;transition:all .15s ease;
+}
+.ov-item:hover{border-color:var(--zip-lime);color:#FFF;transform:translateY(-2px)}
+.ov-item b{display:block;color:var(--zip-lime);font-size:1rem;margin-bottom:.3rem}
+
+/* Notes drawer */
+.notes{display:none;background:#1A0436;color:#D8CCE8;padding:1rem 1.4rem;border-radius:8px;margin-top:1rem;border-left:4px solid var(--zip-purple-2);font-size:.85rem}
+body.notes-on .notes{display:block}
+
+/* Monochromatic B&W Theme */
+body.theme-mono-bw {
+  --zip-midnight: #000000 !important;
+  --zip-purple: #000000 !important;
+  --zip-purple-2: #333333 !important;
+  --zip-purple-3: #555555 !important;
+  --zip-purple-deep: #111111 !important;
+  --zip-lime: #FFFFFF !important;
+  --zip-lime-bright: #EEEEEE !important;
+  --zip-lime-glow: rgba(255, 255, 255, 0.2) !important;
+  --zip-violet-glow: rgba(255, 255, 255, 0.15) !important;
+  --paper: #FFFFFF !important;
+  --paper-elevated: #F7F7F7 !important;
+  --line: #CCCCCC !important;
+  --ink: #000000 !important;
+  --muted: #444444 !important;
+}
+body.theme-mono-bw .slide { background: #FFFFFF !important; color: #000000 !important; }
+body.theme-mono-bw .slide.title-slide { background: #000000 !important; color: #FFFFFF !important; }
+body.theme-mono-bw .title-slide h1,
+body.theme-mono-bw .title-slide h2 { color: #FFFFFF !important; }
+body.theme-mono-bw .card { background: #F9F9F9 !important; border-color: #CCCCCC !important; border-left-color: #000000 !important; }
+body.theme-mono-bw .pill { background: #EEEEEE !important; color: #000000 !important; border-color: #999999 !important; }
+body.theme-mono-bw .callout { background: #F2F2F2 !important; border-left-color: #000000 !important; }
+body.theme-mono-bw .btn { background: #000000 !important; color: #FFFFFF !important; border-color: #000000 !important; }
+body.theme-mono-bw .btn-primary { background: #000000 !important; color: #FFFFFF !important; border: 2px solid #000000 !important; }
+body.theme-mono-bw code { background: #EEEEEE !important; color: #000000 !important; border-color: #CCCCCC !important; }
+body.theme-mono-bw #top-nav { background: #000000 !important; border-bottom-color: #333333 !important; }
+body.theme-mono-bw #chrome { background: #000000 !important; border-color: #444444 !important; }
+</style>
+<script>
+if (window.self !== window.top) {
+  try { window.top.location.href = window.location.href; } catch(e){}
+}
+</script>
+</head>
+<body>
+
+<!-- ============ TOP NAVIGATION & MODE SWITCHER ============ -->
+<header id="top-nav">
+  <div class="zip-brand-wrap" onclick="goHome()" style="cursor:pointer" title="Go to Home (H)">
+    <div class="zip-logo-mark">ZIP<span class="dot">•</span></div>
+    <div class="zip-brand-pill">Agentic Factory</div>
+    <div class="zip-title-text">Project Catalyst &middot; <b>The Architecture Storyline</b></div>
+  </div>
+  <div class="view-switch" style="display:flex;align-items:center;gap:.5rem">
+    <button id="btnDeckHome" class="btn-mode" onclick="goHome()" style="background:#1B0637;border-color:var(--zip-lime);color:var(--zip-lime);font-weight:700">🏠 Home (H)</button>
+    <button id="btnNavDeck" class="btn-mode active" onclick="setAppMode('deck')">📑 Storyline Presentation Deck</button>
+    <button id="btnNavExplorer" class="btn-mode" onclick="setAppMode('explorer')">⚡ Factory Explorer Suite</button>
+    <div class="theme-switcher-pill" style="display:inline-flex;align-items:center;gap:.3rem;background:#17022C;border:1.5px solid #44177F;border-radius:20px;padding:.2rem .4rem;margin-left:.4rem">
+      <button class="theme-btn active" id="btnDeckThemeZip" onclick="setAppTheme('zip-color')" style="background:var(--zip-lime);border:none;color:var(--zip-midnight);padding:.25rem .65rem;border-radius:14px;font-size:.75rem;font-weight:700;cursor:pointer">⚡ Zip Color</button>
+      <button class="theme-btn" id="btnDeckThemeMono" onclick="setAppTheme('mono-bw')" style="background:transparent;border:none;color:#D3C7E8;padding:.25rem .65rem;border-radius:14px;font-size:.75rem;font-weight:700;cursor:pointer">⚪ Mono B&amp;W</button>
+    </div>
+    <a href="day-in-the-life.html" target="_blank" class="btn-mode" style="background:#1C0438;border:1.5px solid var(--zip-lime);color:var(--zip-lime);text-decoration:none;display:inline-flex;align-items:center;gap:.3rem;font-weight:700;margin-left:.4rem">🎬 Day in the Life ↗</a>
+    <a href="archived-readback-deck.html" target="_blank" class="btn-mode" style="background:#1C0438;border:1px solid #7B2CBF;color:#D8B4FE;text-decoration:none;display:inline-flex;align-items:center;gap:.3rem;margin-left:.4rem">📦 Archived Deck (33) ↗</a>
+  </div>
+</header>
+
+<!-- ============ DYNAMIC FACTORY PIPELINE EXPLORER ============ -->
+<div id="factory-explorer-view">
+  <iframe id="explorerIframe" src="factory-explorer.html" style="width:100%;height:calc(100vh - 58px);border:none;display:block" title="Zip Agentic Factory Explorer"></iframe>
+</div>
+
+<div id="deck">
+
+<!-- ============ 01. TITLE / STORYLINE HOME ============ -->
+<section class="slide title-slide" data-slug="Storyline Home">
+  <div style="display:flex;align-items:center;gap:.9em;margin-bottom:.8em">
+    <span style="font-weight:900;font-size:2.3rem;letter-spacing:-.04em;color:#FFF;line-height:1">ZIP<span style="color:var(--zip-lime)">•</span></span>
+    <span class="kicker" style="margin-bottom:0;font-size:.88rem">Project Catalyst &middot; The Architecture Evolution Storyline</span>
+  </div>
+  <h1 style="font-size:2.6rem;margin-bottom:.25em">The Zip Agentic Software&nbsp;Factory</h1>
+  <div class="lime-rule" style="margin-bottom:.9em"></div>
+  <p class="lede" style="font-size:1.05rem;max-width:920px;margin-bottom:1.4em">
+    The architectural evolution across four acts: moving from five scanned whiteboard pages to an industrialized, contract-first autonomous software factory on Google Cloud Platform.
+  </p>
+
+  <!-- THE FOUR ACTS ROADMAP TILES -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;max-width:1120px;margin-bottom:1.5em">
+    
+    <div class="card" style="background:#180332;border:1.5px solid #3B82F6;border-radius:10px;padding:1rem;cursor:pointer" onclick="show(2)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.3em">
+        <span class="pill int" style="background:#1E3A8A;color:#93C5FD;border:none">ACT 1</span>
+        <span style="font-size:.74rem;color:#93C5FD">Slides 3–6</span>
+      </div>
+      <h3 style="font-size:1.05rem;color:#FFF;margin:0 0 .2em 0">Concepts &amp; Phases</h3>
+      <p style="font-size:.78rem;color:#C7D2FE;line-height:1.4;margin:0">Resolves Phase 4 anomaly; Recursive Double Diamond; 10 Typed Artifacts &amp; DER; 28 Personas &amp; 111 Skills.</p>
+    </div>
+
+    <div class="card" style="background:#180332;border:1.5px solid var(--zip-lime);border-radius:10px;padding:1rem;cursor:pointer" onclick="show(6)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.3em">
+        <span class="pill good" style="background:#283900;color:var(--zip-lime);border:none">ACT 2</span>
+        <span style="font-size:.74rem;color:var(--zip-lime)">Slides 7–9</span>
+      </div>
+      <h3 style="font-size:1.05rem;color:#FFF;margin:0 0 .2em 0">Substrate Architecture</h3>
+      <p style="font-size:.78rem;color:#E2FCD6;line-height:1.4;margin:0">5-Tier GCP Cloud Architecture; GKE + Temporal; Cloud Run Sandboxes; Node.js 22 MCP Hub (71 Tools); &lt;750ms Kill Switch.</p>
+    </div>
+
+    <div class="card" style="background:#180332;border:1.5px solid #A855F7;border-radius:10px;padding:1rem;cursor:pointer" onclick="show(9)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.3em">
+        <span class="pill int" style="background:#4C1D95;color:#E9D5FF;border:none">ACT 3</span>
+        <span style="font-size:.74rem;color:#E9D5FF">Slides 10–12</span>
+      </div>
+      <h3 style="font-size:1.05rem;color:#FFF;margin:0 0 .2em 0">FDE SoW &amp; DoD</h3>
+      <p style="font-size:.78rem;color:#F3E8FF;line-height:1.4;margin:0">1x Google FDE Spearhead; Waterline Principle; 4 Milestone Gates; Repayments Dry Run ($0.00 zero-cent drift).</p>
+    </div>
+
+    <div class="card" style="background:#180332;border:1.5px solid #00D4FF;border-radius:10px;padding:1rem;cursor:pointer" onclick="show(12)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.3em">
+        <span class="pill good" style="background:#083344;color:#67E8F9;border:none">ACT 4</span>
+        <span style="font-size:.74rem;color:#67E8F9">Slides 13–16</span>
+      </div>
+      <h3 style="font-size:1.05rem;color:#FFF;margin:0 0 .2em 0">Plan &amp; Roadmap</h3>
+      <p style="font-size:.78rem;color:#CFFAFE;line-height:1.4;margin:0">8 vs 10 vs 12 Weeks Scoping; 4-Stage Progressive Ladder; Cross-Functional RACI; 18-Month Program Horizon.</p>
+    </div>
+
+  </div>
+
+  <div style="display:flex;gap:.7rem;flex-wrap:wrap;align-items:center">
+    <button class="btn btn-primary" onclick="show(1)" style="padding:.6em 1.3em;font-size:.88rem;font-weight:800">
+      ▶ Start Storyline Presentation (Slide 1)
+    </button>
+    <a href="day-in-the-life.html" target="_blank" class="btn" style="padding:.6em 1.2em;font-size:.85rem;background:linear-gradient(135deg,#2D0C54,#4C1D95);border:1.5px solid var(--zip-lime);color:var(--zip-lime);font-weight:800;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem">
+      🎬 Launch 'Day in the Life' Interactive Animation ↗
+    </a>
+    <button class="btn" onclick="openExplorerSection('storyline')" style="padding:.6em 1.1em;font-size:.85rem;background:#24044B;border-color:var(--zip-lime);color:var(--zip-lime)">
+      ⚡ Open Storyline Hub in Explorer
+    </button>
+    <a href="archived-readback-deck.html" target="_blank" class="btn" style="padding:.6em 1.1em;font-size:.85rem;background:#1A0436;border-color:#7B2CBF;color:#D8B4FE;text-decoration:none">
+      📦 Open Archived 33-Slide Whiteboard Deck ↗
+    </a>
+  </div>
+
+  <div class="title-meta" style="max-width:1120px;margin-top:2em">
+    <div><b>4</b> Acts Delivered</div>
+    <div><b>7</b> Pipeline Phases</div>
+    <div><b>10</b> Typed Artifacts (DER)</div>
+    <div><b>28</b> Personas &amp; 111 Skills</div>
+    <div><b>12</b> Weeks Sequential Handover</div>
+    <div><b>$0.00</b> Zero Ledger Drift Target</div>
+  </div>
+</section>
+
+<!-- ============ 02. STRATEGIC CONTEXT & WATERLINE ============ -->
+<section class="slide" data-slug="The Core Dilemma">
+  <span class="kicker">Strategic Context &middot; Rebuilding Core LMS</span>
+  <h2>Moving Beyond Naive LLM Prompting</h2>
+  <p class="lede">Consumer lending infrastructure requires statutory compliance (Truth in Lending Act / Reg Z) and double-entry accounting balances where $\Delta = \$0.00$. Standard generative copilots introduce four critical failure modes that demand an industrialized deterministic substrate.</p>
+  <div class="body scroll">
+    <div class="cols" style="margin-bottom:1em">
+      
+      <div class="card gap">
+        <h3><span class="num">1</span>The Failure Modes of Probabilistic AI</h3>
+        <ul class="clean" style="font-size:.84em">
+          <li><b>Context Drift &amp; State Amnesia:</b> Unconstrained chat prompts invent non-existent APIs and drop regulatory lending constraints.</li>
+          <li><b>Unbounded Ambient Authority:</b> Giving LLMs ambient cloud credentials risks accidental database wipes or live payment rail execution.</li>
+          <li><b>Circular Confirmation Bias:</b> When an agent authors both implementation and test, it writes tests that assert against its own bugs.</li>
+          <li><b>Non-Deterministic Builds:</b> Probabilistic outputs yield irreproducible code, flaky CI, and untraceable regressions.</li>
+        </ul>
+      </div>
+
+      <div class="card good">
+        <h3><span class="num">2</span>The Deterministic Substrate on GCP</h3>
+        <ul class="clean" style="font-size:.84em">
+          <li><b>Human Governed, Machine Executed:</b> Qualified Zip engineers specify intent and hold every consequential gate.</li>
+          <li><b>Constitutional Separation:</b> "Author and judge are never the same persona." Test generation has zero code visibility.</li>
+          <li><b>Single-Task Disposable Sandboxes:</b> Ephemeral Cloud Run sandboxes with 15-minute down-scoped IAM tokens.</li>
+          <li><b>Immutable Signed Ledger:</b> Every state transition, disagreement, and gate evaluation committed to Cloud SQL PostgreSQL.</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="callout lime">
+      <b>The Sovereign Waterline Principle:</b> Zip permanently owns everything <i>Above the Waterline</i> (domain methodology, golden specs, evaluation test banks, invariants, and legal verification evidence). Google Cloud provides commodity infrastructure <i>Below the Waterline</i> (GKE, Cloud Run, Temporal, Cloud SQL, Vertex AI). Zip buys models as utility, but builds the factory as an enduring operational asset.
+    </div>
+  </div>
+  <div class="notes"><b>Key framing for Chris &amp; Eric:</b> We are not selling a magic black box or staff augmentation. We are constructing an industrialized software manufacturing plant that Zip owns in perpetuity.</div>
+</section>
+
+<!-- ============ 03. ACT 1 · SEVEN PHASES & PHASE 4 RESOLUTION ============ -->
+<section class="slide" data-slug="Act 1 · Seven Phases">
+  <span class="kicker">Act 1: Concepts &amp; Phases &middot; End-to-End Pipeline</span>
+  <h2>Seven Phases, All Accounted For</h2>
+  <p class="lede">Resolving the historic whiteboard anomaly: the original scans skipped Stage 4. Act 1 establishes <b>Phase 4: Review &amp; Verification</b>, ensuring human gating and adversarial compliance audits before code merges.</p>
+  <div class="body scroll">
+    <div class="cols" style="margin-bottom:1em">
+      
+      <div>
+        <table style="font-size:.8em">
+          <thead>
+            <tr><th>Phase</th><th>Mission &amp; Focus</th><th>Oversight &amp; Gate</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><b>1. Specify</b></td><td>Intent intake, legacy C# code archaeology, formal PRD (A)</td><td><span class="pill gate">Gate: PRD GO / NO-GO</span></td></tr>
+            <tr><td><b>2. Dispatch</b></td><td>Task decomposition, autonomy rungs, sandbox isolation (C)</td><td><span class="pill int">Rung &amp; Budget Matching</span></td></tr>
+            <tr><td><b>3. Generate</b></td><td>Service AST skeletons, parallel microservice codegen (D)</td><td><span class="pill led">Isolated Sandbox Build</span></td></tr>
+            <tr style="background:#FFF9E6"><td><b>4. Review ⚡</b></td><td><b>Adversarial challenge, compliance audit, peer review</b></td><td><span class="pill gap">Resolved Anomaly · Gatekeeper</span></td></tr>
+            <tr><td><b>5. Validate</b></td><td>Isolated TDD execution (E), load tests, balance invariants</td><td><span class="pill gcp">Automated Assertion Run</span></td></tr>
+            <tr><td><b>6. Shadow</b></td><td>Dual ingestion, live traffic mirroring, $0.00 drift proof</td><td><span class="pill gate">Gate: Shadow Cutover</span></td></tr>
+            <tr><td><b>7. Update</b></td><td>Documentation harvesting, calibration ledger, closure loop</td><td><span class="pill good">Closes Loop ↺ into Phase 1</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <div class="card" style="margin-bottom:.8em">
+          <h3>Why Phase 4 Was Missing</h3>
+          <p style="font-size:.84em">On the whiteboard, the team numbered stages 1, 2, 3, 5, 6, 7. In a manual workflow, code review is an afterthought. In an autonomous software factory, <b>Phase 4 is a mandatory constitutional firewall</b> where independent security, compliance, and regulatory personas challenge the generated code before it touches integration environments.</p>
+        </div>
+        <div class="callout">
+          <b>Closed Loop Learning:</b> Phase 7 updates the Calibration Ledger (<code>calibrations.yaml</code>). Lessons learned from shadow gating are automatically fed back into Phase 1 golden PRD templates, preventing prompt drift and organizational amnesia.
+        </div>
+        <button class="btn" onclick="openExplorerSection('pipeline')" style="font-size:.82em;padding:.4em .8em">
+          🔄 Inspect Interactive Phases in Explorer &rarr;
+        </button>
+      </div>
+
+    </div>
+  </div>
+  <div class="notes"><b>Talking point:</b> The missing Phase 4 was the biggest tell in the whiteboard. We formally resolved it as Phase 4: Review &amp; Verification.</div>
+</section>
+
+<!-- ============ 04. ACT 1 · RECURSIVE DOUBLE DIAMOND ============ -->
+<section class="slide" data-slug="Act 1 · Double Diamond">
+  <span class="kicker">Act 1: Concepts &amp; Phases &middot; Execution Framework</span>
+  <h2>The Recursive Double Diamond within Every Phase</h2>
+  <p class="lede">Rather than treating the British Design Council’s Double Diamond as a static, multi-month project management waterfall, the Zip factory applies the <b>Double Diamond recursively within every single phase</b>.</p>
+  <div class="body scroll">
+    
+    <div class="cols4" style="margin-bottom:1.2em">
+      <div class="card" style="border-left-color:#3B82F6">
+        <span class="pill int" style="background:#1E3A8A;color:#93C5FD;border:none">DIAMOND 1 · DIVERGENT</span>
+        <h3 style="margin-top:.4em">1. Discover</h3>
+        <p style="font-size:.82em">Fan-out context gathering, legacy Azure monolith C# AST parsing, regulatory requirement retrieval, and edge-case discovery.</p>
+      </div>
+
+      <div class="card lime" style="border-left-color:var(--zip-lime-dim)">
+        <span class="pill good" style="background:#283900;color:var(--zip-lime);border:none">DIAMOND 1 · CONVERGENT</span>
+        <h3 style="margin-top:.4em">2. Define</h3>
+        <p style="font-size:.82em">Synthesizing insights into rigid, machine-verifiable JSON Schema contracts (Artifacts A–F). Establishing mathematical invariants.</p>
+      </div>
+
+      <div class="card" style="border-left-color:#A855F7">
+        <span class="pill int" style="background:#4C1D95;color:#E9D5FF;border:none">DIAMOND 2 · DIVERGENT</span>
+        <h3 style="margin-top:.4em">3. Develop</h3>
+        <p style="font-size:.82em">Multi-agent parallel codegen; isolated zero-code-access test authoring; adversarial red-team probing in ephemeral sandboxes.</p>
+      </div>
+
+      <div class="card good" style="border-left-color:#00D4FF">
+        <span class="pill good" style="background:#083344;color:#67E8F9;border:none">DIAMOND 2 · CONVERGENT</span>
+        <h3 style="margin-top:.4em">4. Deliver</h3>
+        <p style="font-size:.82em">Automated verification against non-negotiable exit gates; cent-for-cent ledger drift proof ($0.00); cryptographic sign-off.</p>
+      </div>
+    </div>
+
+    <div class="callout lime">
+      <b>The Compounding Advantage for Zip:</b> Skips neither discovery nor verification. Traditional LLM codegen jumps straight from vague prompt to code (skipping Diamond 1), resulting in massive rework. By enforcing convergence before code generation, requirements are mathematically proven unambiguous before any code is generated.
+    </div>
+
+    <div style="margin-top:.8em;display:flex;justify-content:space-between;align-items:center">
+      <span style="font-size:.82em;color:var(--muted)">Every phase renders an interactive Directed Acyclic Graph (DAG) in the Explorer.</span>
+      <button class="btn" onclick="openExplorerSection('pipeline')" style="font-size:.82em;padding:.4em .8em">
+        🕸️ Open Phases Execution DAG in Explorer &rarr;
+      </button>
+    </div>
+  </div>
+  <div class="notes"><b>Key insight:</b> Applying Double Diamond recursively prevents the classic AI failure of "prompt-to-code-with-no-bounds".</div>
+</section>
+
+<!-- ============ 05. ACT 1 · 10 TYPED ARTIFACTS & DER ============ -->
+<section class="slide" data-slug="Act 1 · Typed Artifacts">
+  <span class="kicker">Act 1: Concepts &amp; Phases &middot; Data Contracts</span>
+  <h2>From Informal Files to 10 Strongly-Typed Artifacts</h2>
+  <p class="lede">Upgrading handwritten whiteboard notes into 10 machine-enforced JSON Schema contracts with bidirectional entity relationships, cryptographic hashes, and immutable audit trails.</p>
+  <div class="body scroll">
+    <div class="cols" style="margin-bottom:1em">
+      
+      <div>
+        <table style="font-size:.78em">
+          <thead><tr><th>Artifact</th><th>Contract Type</th><th>Schema Role</th></tr></thead>
+          <tbody>
+            <tr><td><b>Artifact A</b></td><td><span class="pill ext">Golden PRD</span></td><td>Structured intent, NFR bounds &amp; statutory rules</td></tr>
+            <tr><td><b>Artifact B</b></td><td><span class="pill led">Negotiation File</span></td><td>Disagreement ledger, trade-offs &amp; consensus</td></tr>
+            <tr><td><b>Artifact C</b></td><td><span class="pill int">Topology Contract</span></td><td>Task decomposition, autonomy rungs &amp; mocks</td></tr>
+            <tr><td><b>Artifact D</b></td><td><span class="pill gcp">Build Report</span></td><td>Service AST skeletons, source &amp; manifests</td></tr>
+            <tr><td><b>Artifact E</b></td><td><span class="pill good">Test Suite</span></td><td>Zero-code-access spec-derived assertions</td></tr>
+            <tr><td><b>Artifact F</b></td><td><span class="pill gate">Evidence Pack</span></td><td>Immutable compliance &amp; bank regulator proof</td></tr>
+            <tr><td><b>Registry</b></td><td><span class="pill int">Capabilities</span></td><td>Agent skills, versions &amp; performance ratings</td></tr>
+            <tr><td><b>Ledger</b></td><td><span class="pill led">Calibrations</span></td><td>Living SOP adjustments &amp; prompt calibrations</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <div class="card good" style="margin-bottom:.8em">
+          <h3>"Disagreement is an Artifact" (Artifact B)</h3>
+          <p style="font-size:.84em">The whiteboard introduced the "Negotiation File." We elevated it to a first-class engineering contract. When an agent challenges another agent or a human engineer disputes a specification, <b>the disagreement is recorded as an immutable signed artifact</b>, creating a transparent audit trail of design trade-offs for bank examiners.</p>
+        </div>
+        <div class="callout">
+          <b>Bidirectional Traceability:</b> Every line of generated Go/C# code in Artifact D links back to an acceptance criterion in Artifact A, a test in Artifact E, and a compliance hash in Artifact F.
+        </div>
+        <button class="btn" onclick="openExplorerSection('artifacts')" style="font-size:.82em;padding:.4em .8em">
+          📦 View Interactive DER Data Model &rarr;
+        </button>
+      </div>
+
+    </div>
+  </div>
+  <div class="notes"><b>Auditor angle:</b> Regulators (OCC/CFPB) will ask: "Why did the system make this change?" Artifacts B &amp; F provide complete mathematical proof.</div>
+</section>
+
+<!-- ============ 06. ACT 1 · CONSTITUTIONAL SEPARATION OF POWERS ============ -->
+<section class="slide" data-slug="Act 1 · Personas &amp; Skills">
+  <span class="kicker">Act 1: Concepts &amp; Phases &middot; Constitutional Governance</span>
+  <h2>Constitutional Separation of Powers &amp; 28 Personas</h2>
+  <p class="lede">Eliminating circular confirmation bias: <b>"Author and judge are never the same persona."</b> The factory defines 28 specialized personas across 6 families equipped with 111 machine-executable skills.</p>
+  <div class="body scroll">
+    <div class="cols" style="margin-bottom:1em">
+      
+      <div>
+        <div class="card" style="margin-bottom:.8em">
+          <h3>The Test Isolation Doctrine</h3>
+          <p style="font-size:.84em">When human SWEs write tests, they write tests to prove their code works. In the Zip Agentic Factory, the <b>Test Author persona operates in complete isolation from the implementation code</b>. It derives test suites strictly from Artifact A (PRD) and API schemas. If implementation code passes tests written by an agent that never saw the code, circular hallucination drops to zero.</p>
+        </div>
+
+        <div class="card good">
+          <h3>Adversarial Personas (Red Team)</h3>
+          <p style="font-size:.84em">Every generative persona is paired with an independent adversary: <i>Requirements Architect vs. Spec Adversary</i>, <i>Code Implementer vs. Static Analyzer</i>, <i>Service Engineer vs. Chaos Engineer</i>.</p>
+        </div>
+      </div>
+
+      <div>
+        <table style="font-size:.78em">
+          <thead><tr><th>Family</th><th>Role</th><th>Key Personas (28 Total)</th></tr></thead>
+          <tbody>
+            <tr><td><b>A: Product</b></td><td>Intent Intake</td><td>PM, Domain SMEs, Regulatory Analyst, UX Designer</td></tr>
+            <tr><td><b>B: Architecture</b></td><td>Topology &amp; Specs</td><td>Reqs Architect, Spec Adversary, Enterprise Arch</td></tr>
+            <tr><td><b>C: Build</b></td><td>Codegen</td><td>Service SWE, Scaffold Agent, Backfill Specialist</td></tr>
+            <tr><td><b>D: Judges</b></td><td>Quality &amp; Safety</td><td>Isolated Test SWE, Static Analyzer, Red Team</td></tr>
+            <tr><td><b>E: DevOps</b></td><td>Substrate</td><td>GKE Substrate Eng, CI/CD Specialist, SRE Agent</td></tr>
+            <tr><td><b>F: Governance</b></td><td>Compliance</td><td>CISO Compliance Officer, Token Economist</td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:.8em;display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:.8em;color:var(--muted)">10 MVP personas selected for Phase 1 dry run.</span>
+          <button class="btn" onclick="openExplorerSection('personas')" style="font-size:.8em;padding:.4em .8em">
+            👥 Open 28-Persona Directory &rarr;
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="notes"><b>Key talking point:</b> 28 personas is not 28 prompt files. It is an adversarial organizational matrix where each role has strictly scoped permissions and skills.</div>
+</section>
+
+<!-- ============ 07. ACT 2 · 5-TIER GCP CLOUD ARCHITECTURE ============ -->
+<section class="slide" data-slug="Act 2 · Substrate Architecture">
+  <span class="kicker">Act 2: Platform Architecture &middot; GCP Blueprint</span>
+  <h2>The 5-Tier Cloud Architecture on Google Cloud Platform</h2>
+  <p class="lede">Deploying an industrialized, sovereign cloud substrate on GCP: stripping agents of persistent ambient authority and enforcing zero-trust execution across disposable containers.</p>
+  <div class="body scroll">
+    
+    <div class="cols" style="margin-bottom:1em">
+      <div class="card" style="border-left-color:#3B82F6">
+        <h3><span class="num">1</span>Perimeter &amp; Control Plane</h3>
+        <p style="font-size:.84em"><b>Tier 1 (Perimeter):</b> GitHub Enterprise CODEOWNERS branch protection, Jira Cloud Read-Only MCP, Slack Enterprise kill switch, GCS WORM retention bucket.</p>
+        <p style="font-size:.84em;margin-top:.4em"><b>Tier 2 (GKE Control Plane):</b> GKE Enterprise Private Cluster with Workload Identity, Temporal.io durable orchestration engine, and Cloud SQL PostgreSQL 16 JSONB backplane.</p>
+      </div>
+
+      <div class="card lime" style="border-left-color:var(--zip-lime-dim)">
+        <h3><span class="num">2</span>Sandboxes &amp; Vertex Gateway</h3>
+        <p style="font-size:.84em"><b>Tier 3 (Execution Sandboxes):</b> Disposable Cloud Run containers with read-only root filesystems, volatile tmpfs, and ephemeral 15-minute OAuth2 tokens.</p>
+        <p style="font-size:.84em;margin-top:.4em"><b>Tier 4 (Vertex AI Gateway):</b> Intelligent multi-model routing: Gemini 1.5 Pro (2M context for specs/statutes), Claude 3.5 Sonnet (idiomatic codegen), Gemini Flash (AST linting/eval triage).</p>
+      </div>
+    </div>
+
+    <div class="card good" style="margin-bottom:.8em">
+      <h3>Tier 5: Target Core, Service Mesh &amp; Legacy Coexistence</h3>
+      <p style="font-size:.85em"><b>GKE Service Mesh (Istio Envoy Proxies):</b> Suppresses all outbound network calls during pipeline runs, preventing accidental SMS alerts, live bureau queries, or payment rail triggers. <b>Cloud Pub/Sub Dual Ingestion:</b> Mirrors live production transactions from Azure monolith. <b>BigQuery Reconciliation:</b> Verifies double-entry ledger balance ($0.00 delta) over 14 consecutive clean days.</p>
+    </div>
+
+    <button class="btn" onclick="openExplorerSection('architecture')" style="font-size:.82em;padding:.4em .8em">
+      ⚙️ View Interactive GCP Architecture Map &rarr;
+    </button>
+  </div>
+  <div class="notes"><b>Architecture highlight:</b> Notice the Envoy outbound suppression proxy. The agents literally cannot trigger an external payment rail even if they try.</div>
+</section>
+
+<!-- ============ 08. ACT 2 · MCP HUB & SUB-SECOND KILL SWITCH ============ -->
+<section class="slide" data-slug="Act 2 · Tooling &amp; Safety">
+  <span class="kicker">Act 2: Platform Architecture &middot; Tooling &amp; State Membrane</span>
+  <h2>Node.js 22 MCP Hub &amp; Sub-Second Emergency Kill Switch</h2>
+  <p class="lede">Establishing the deterministic tooling backbone: 71 domain tools across 17 subsystems, asynchronous reactive wake protocols, and a sub-second emergency abort mechanism.</p>
+  <div class="body scroll">
+    <div class="cols" style="margin-bottom:1em">
+      
+      <div>
+        <div class="card" style="margin-bottom:.8em">
+          <h3>The Central MCP Hub (Node.js 22)</h3>
+          <ul class="clean" style="font-size:.83em">
+            <li><b>71 Specialized Domain Tools:</b> Covering git, jira, cloudrun, postgres, bigquery, temporal, and vault across 17 subsystems.</li>
+            <li><b>Streamable HTTP Wire Transport:</b> Persistent Server-Sent Events (SSE) with <code>Last-Event-ID</code> session recovery.</li>
+            <li><b>Actionable Wake Protocol:</b> Injects <code>&lt;wake&gt;</code> events into agent contexts, completely eliminating wasteful polling loops.</li>
+            <li><b>Sovereign State Storage:</b> All state stored in Cloud SQL PostgreSQL JSONB envelopes with versioned optimistic locking.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div>
+        <div class="card gap" style="margin-bottom:.8em">
+          <h3>Sub-Second Slack Kill Switch (&lt;750ms)</h3>
+          <p style="font-size:.84em">A single slash command in Slack Enterprise (<code>/kill-agent &lt;id&gt;</code> or <code>/abort-pipeline &lt;run-id&gt;</code>) triggers a global cascade across three independent layers:</p>
+          <ul class="clean" style="font-size:.82em;margin-top:.4em">
+            <li>1. Ephemeral IAM Token Broker revokes active OAuth2 token (&lt;100ms).</li>
+            <li>2. GKE/Cloud Run executes SIGKILL on container sandboxes (&lt;250ms).</li>
+            <li>3. Temporal issues cancel signal to workflow saga state engine (&lt;400ms).</li>
+          </ul>
+        </div>
+        <div class="callout good">
+          <b>Audited Safety:</b> Tested and verified at <b>&lt;750ms end-to-end latency</b>, fulfilling CISO Chris Nelms' non-negotiable Stage 0 exit criterion.
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="notes"><b>Key CISO talking point:</b> Chris Nelms wanted proof of the kill switch. It is hardware-isolated, revokes credentials first, and executes in under 750ms.</div>
+</section>
+
+<!-- ============ 09. ACT 2 · REFERENCE TRIAD ADOPTION ============ -->
+<section class="slide" data-slug="Act 2 · Reference Blueprints">
+  <span class="kicker">Act 2: Platform Architecture &middot; Proven Patterns</span>
+  <h2>Grounding in the Reference Triad</h2>
+  <p class="lede">Rather than inventing patterns from scratch, the Zip Agentic Factory directly inherits and formalizes architectural constructs from three proven production repositories.</p>
+  <div class="body scroll">
+    
+    <div class="cols3" style="margin-bottom:1.2em">
+      
+      <div class="card" style="border-left-color:#3B82F6">
+        <span class="pill int">MISSION-KIT</span>
+        <h3 style="margin-top:.4em">14 Invariant Axioms</h3>
+        <p style="font-size:.82em">Enforces the 14 Invariant Axioms (<code>A1</code>–<code>A14</code>): 3-axis dynamic work generation ($Role 	imes Work 	imes Domain$), cognitive claim disciplines (<i>Measure before cite</i>, <i>Retract for insufficiency</i>), and the rule: <i>"3 cycles without narrowing = Park"</i>.</p>
+      </div>
+
+      <div class="card lime" style="border-left-color:var(--zip-lime-dim)">
+        <span class="pill good">AGENTIC-NETWORK</span>
+        <h3 style="margin-top:.4em">Threads 2.0 Consensus</h3>
+        <p style="font-size:.82em">Turn-alternating structured consensus protocol using mandatory semantic tags (<code>propose</code>, <code>challenge</code>, <code>concur</code>, <code>synthesize</code>, <code>park</code>) and a queryable Calibration Ledger (<code>calibrations.yaml</code>) to eliminate organizational drift.</p>
+      </div>
+
+      <div class="card" style="border-left-color:#A855F7">
+        <span class="pill int">MAM PLATFORM</span>
+        <h3 style="margin-top:.4em">3-Layer &amp; Neighborhoods</h3>
+        <p style="font-size:.82em">Strict 3-Layer architecture (Conductor SOPs ➔ ADK Multi-Agent Orchestration ➔ Deterministic Tool Execution) with Directory Governance Neighborhood Rules preventing cross-boundary pollution.</p>
+      </div>
+
+    </div>
+
+    <div class="callout">
+      <b>Self-Healing Annealing Loop:</b> When a test or lint failure occurs in Phase 5, the error trace is captured, an isolated fix is generated, validated via TDD, and the living SOP in <code>conductor/</code> is automatically updated so the error never repeats.
+    </div>
+
+    <div style="margin-top:.8em;display:flex;justify-content:space-between;align-items:center">
+      <span style="font-size:.82em;color:var(--muted)">Full distillation analysis available in Reference Architectures suite.</span>
+      <button class="btn" onclick="openExplorerSection('samples')" style="font-size:.82em;padding:.4em .8em">
+        🏛️ Explore Reference Triad in Explorer &rarr;
+      </button>
+    </div>
+  </div>
+  <div class="notes"><b>Talking point:</b> We didn'''t invent these agentic concepts yesterday. They come directly from Google Cloud'''s battle-tested reference blueprints.</div>
+</section>
+
+<!-- ============ 10. ACT 3 · GOOGLE FDE ENGAGEMENT & SOW ============ -->
+<section class="slide" data-slug="Act 3 · FDE SoW Boundaries">
+  <span class="kicker">Act 3: FDE Statement of Work &middot; Engagement Model</span>
+  <h2>The Google FDE Spearhead Engagement Model</h2>
+  <p class="lede">Time-boxed Statement of Work (SoW) for 1x Google Field Deployed Engineer (FDE). The FDE builds the factory machine and guides the pilot dry run; Zip and Quantium scale it across the enterprise.</p>
+  <div class="body scroll">
+    <div class="cols" style="margin-bottom:1em">
+      
+      <div class="card good">
+        <h3><span class="num">1</span>In-Scope (Google FDE Spearhead)</h3>
+        <ul class="clean" style="font-size:.83em">
+          <li><b>GKE Substrate &amp; Control Plane:</b> Production Terraform for GKE private cluster, Temporal workflow engine, and Cloud SQL registry.</li>
+          <li><b>SDLC Harness &amp; 10 MVP Personas:</b> Prompt templates, AST scaffolds, and zero-code isolated TDD runner.</li>
+          <li><b>Repayments Pilot Run (Iteration 1):</b> Driving the factory to generate the core Repayments &amp; Loan Amortization Engine.</li>
+          <li><b>Sub-Second Kill Switch:</b> Slack webhook integration and CIS GKE benchmark hardening.</li>
+          <li><b>Handover Artifact Pack:</b> ADRs, runbooks, golden specs, and training for Zip &amp; Quantium engineers.</li>
+        </ul>
+      </div>
+
+      <div class="card gap">
+        <h3><span class="num">2</span>Out-of-Scope (Zip &amp; Quantium)</h3>
+        <ul class="clean" style="font-size:.83em">
+          <li><b>Re-Platforming Remaining 4 LMS Domains:</b> Decisioning, Issuing, Customer Master, and Merchant Clearing executed by Quantium &amp; Zip.</li>
+          <li><b>Live Production DNS Cutover:</b> Traffic transition happens in Months 9–12 under Zip SRE control.</li>
+          <li><b>Decommissioning Azure Monolith:</b> Event sourcing retirement managed by Zip Enterprise Architecture.</li>
+          <li><b>24/7 Production On-Call:</b> Normal operational support belongs to Zip SRE and Quantium.</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="callout lime">
+      <b>The Core Mandate:</b> Build the machine, not the whole fleet. The Google FDE ensures the manufacturing platform is robust, verified, and transferable, avoiding the "infinite pilot trap" of bespoke coding.
+    </div>
+  </div>
+  <div class="notes"><b>Boundary clarity:</b> This prevents the common customer misconception that 1 FDE will manually write all 5 microservice domains in 12 weeks.</div>
+</section>
+
+<!-- ============ 11. ACT 3 · 4 MILESTONE GATES & VERIFIABLE DOD ============ -->
+<section class="slide" data-slug="Act 3 · Milestone Gates">
+  <span class="kicker">Act 3: FDE Statement of Work &middot; Quality Gates</span>
+  <h2>4 Milestone Gates &amp; The 8-Gate Verifiable DoD</h2>
+  <p class="lede">Every phase boundary is governed by machine-verifiable exit gates. No milestone is signed off on subjective intent—only on objective, automated proof.</p>
+  <div class="body scroll">
+    
+    <table style="font-size:.82em;margin-bottom:1em">
+      <thead>
+        <tr><th>Gate</th><th>Timeline</th><th>Verifiable Definition of Done (DoD) Milestone</th><th>Sign-Off Authority</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="pill int">M1</span></td>
+          <td><b>End Week 2</b></td>
+          <td>GKE Substrate, Temporal &amp; Cloud SQL live; kill switch aborts all sandboxes in <b>&lt;750ms</b>.</td>
+          <td>Chris Nelms (CISO)</td>
+        </tr>
+        <tr>
+          <td><span class="pill int">M2</span></td>
+          <td><b>End Week 5</b></td>
+          <td>10 MVP Personas versioned; Isolated TDD runner passes 100% test synthesis from PRDs.</td>
+          <td>Google FDE Lead</td>
+        </tr>
+        <tr>
+          <td><span class="pill led">M3</span></td>
+          <td><b>End Week 8</b></td>
+          <td>Repayments passes 100% unit/integration tests; 50k loans replay with <b>$0.00 zero drift</b>.</td>
+          <td>Zip Systems Engineer</td>
+        </tr>
+        <tr>
+          <td><span class="pill good">M4</span></td>
+          <td><b>End Week 12</b></td>
+          <td>Zip &amp; Quantium independently run factory dry run with <b>0 FDE touches</b>; GA signed.</td>
+          <td>Nelms &amp; Blassberg</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="cols" style="margin-bottom:.8em">
+      <div class="card">
+        <h3>The 8-Gate Verifiable DoD Checklist</h3>
+        <p style="font-size:.82em">1. IaC 100% Terraform &middot; 2. Temporal saga durability &middot; 3. Artifacts A–F JSON Schema validation &middot; 4. CIS GKE benchmarks &middot; 5. &lt;750ms kill switch &middot; 6. Zero-code test isolation &middot; 7. $0.00 ledger drift &middot; 8. Unassisted factory run.</p>
+      </div>
+
+      <div class="card good">
+        <h3>Certified Handover Pack</h3>
+        <p style="font-size:.82em">Includes 8 formal deliverables: Architecture Decision Records (ADRs), Production Runbooks, Golden PRD Templates, 10 Persona Definition Packs, TDD Harness, and Operator Training Certification.</p>
+      </div>
+    </div>
+
+    <button class="btn" onclick="openExplorerSection('planning')" style="font-size:.82em;padding:.4em .8em">
+      📋 View Complete DoD Checklist in Explorer &rarr;
+    </button>
+  </div>
+  <div class="notes"><b>Key talking point:</b> Handover is progressive and verified. By Week 12, Zip and Quantium run the factory unassisted.</div>
+</section>
+
+<!-- ============ 12. ACT 3 · REPAYMENTS PILOT TARGET ============ -->
+<section class="slide" data-slug="Act 3 · Pilot Dry Run">
+  <span class="kicker">Act 3: FDE Statement of Work &middot; Pilot Dry Run</span>
+  <h2>Pilot Target: Repayments &amp; Loan Amortization Engine</h2>
+  <p class="lede">Selected as the pilot dry run for core banking rigor: requires exact decimal mathematics, double-entry ledger balance, statutory Truth in Lending Act disclosures, and historical replay against Snowflake/Databricks.</p>
+  <div class="body scroll">
+    <div class="cols" style="margin-bottom:1em">
+      
+      <div>
+        <div class="card lime" style="margin-bottom:.8em">
+          <h3>Why Repayments Was Chosen</h3>
+          <ul class="clean" style="font-size:.83em">
+            <li><b>Zero Tolerance for Float Errors:</b> Floating-point math introduces fractional cent errors. Must use exact arbitrary-precision decimal representation.</li>
+            <li><b>Statutory APR Calculations:</b> Truth in Lending Act (Reg Z) requires exact disclosure schedules and US state interest rate cap compliance.</li>
+            <li><b>Double-Entry Accounting:</b> Every debited repayment must balance against principal, fee, and interest ledgers with exact zero variance.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div>
+        <div class="card good" style="margin-bottom:.8em">
+          <h3>Historical Production Replay ($0.00 Drift)</h3>
+          <ul class="clean" style="font-size:.83em">
+            <li><b>50,000 Active Accounts:</b> Replaying 3 years of actual production ledger transactions from Snowflake/Databricks.</li>
+            <li><b>4-Class Divergence Taxonomy:</b> Categorizes differences into Exact Match, Expected Refactoring, Legacy Anomaly, or Bug.</li>
+            <li><b>14-Day Zero-Cent Proof Gate:</b> Requires 14 consecutive clean days of zero financial drift before cutover sign-off.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="callout lime">
+      <b>The Ultimate Financial Proof:</b> If the autonomous factory can manufacture the Repayments Engine and replay 50,000 complex amortizing loans with <b>$0.00 zero-cent variance</b>, the factory has proven it can build any domain in the banking estate.
+    </div>
+  </div>
+  <div class="notes"><b>Financial gravity:</b> If you build Decisioning or Customer first, you get fuzzy NLP answers. Repayments is mathematically pure: either the ledger balances to the penny, or it fails.</div>
+</section>
+
+<!-- ============ 13. ACT 4 · DELIVERY SCOPING (8 VS 10 VS 12 WEEKS) ============ -->
+<section class="slide" data-slug="Act 4 · Scoping Scenarios">
+  <span class="kicker">Act 4: Phased Implementation &middot; Scoping Evaluation</span>
+  <h2>Delivery Scoping: 8 vs 10 vs 12 Weeks</h2>
+  <p class="lede">Addressing leadership inquiry regarding the adequacy of the initial estimate: <b>8 weeks is high risk, 10 weeks is tight on partner runway, and 12 weeks is the derisked recommendation (61 person-weeks)</b>.</p>
+  <div class="body scroll">
+    
+    <div class="cols3" style="margin-bottom:1.2em">
+      
+      <!-- Scenario 1 -->
+      <div class="card gap">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.3em">
+          <span class="pill gap">SCENARIO 1</span>
+          <span class="pill p0">🔴 HIGH RISK</span>
+        </div>
+        <h3 style="margin-bottom:.2em"><span class="num">1</span>8-Week Sprint</h3>
+        <p style="font-size:.82em"><b>Minimum Viable Build.</b> Synthetic-only test dry run (no historical replay); async handover; partner excluded.</p>
+        <p style="margin-top:.4em;font-size:.8em"><b>Effort:</b> FDE 8 PW &middot; Zip 12 PW &middot; Partner 0 PW (20 PW Total)</p>
+        <p style="margin-top:.3em;font-size:.78em;color:var(--gap-t)"><em>Requires VPC ready Day 0. High risk partner cannot operate factory unassisted.</em></p>
+      </div>
+
+      <!-- Scenario 2 -->
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.3em">
+          <span class="pill p1">SCENARIO 2</span>
+          <span class="pill int">🟡 PRAGMATIC</span>
+        </div>
+        <h3 style="margin-bottom:.2em"><span class="num">2</span>10-Week Balanced MVP</h3>
+        <p style="font-size:.82em"><b>Functional Build + Sample Replay.</b> 1-month historical replay (1,000 loans); 2-week compressed pairing.</p>
+        <p style="margin-top:.4em;font-size:.8em"><b>Effort:</b> FDE 10 PW &middot; Zip 18 PW &middot; Partner 4 PW (32 PW Total)</p>
+        <p style="margin-top:.3em;font-size:.78em;color:var(--muted)"><em>Solid technical proof, but tight on partner operational runway before FDE departs.</em></p>
+      </div>
+
+      <!-- Scenario 3 -->
+      <div class="card good" style="border-left-color:var(--zip-lime);border-width:2px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.3em">
+          <span class="pill gcp" style="background:#182800;color:var(--zip-lime);border-color:var(--zip-lime)">SCENARIO 3 · RECOMMENDED</span>
+          <span class="pill good">🟢 DERISKED</span>
+        </div>
+        <h3 style="margin-bottom:.2em"><span class="num">3</span>12-Week Handover</h3>
+        <p style="font-size:.82em"><b>Full Build + Financial Proof + 4-Week Partner Co-Delivery.</b> Full 3-year historical loan replay (50,000 loans); $0.00 zero drift.</p>
+        <p style="margin-top:.4em;font-size:.8em"><b>Effort:</b> FDE 12 PW &middot; Zip 28 PW &middot; Partner 16 PW (56–61 PW Total)</p>
+        <p style="margin-top:.3em;font-size:.78em;color:var(--gcp-t)"><em>Guarantees enduring Zip capability and operational independence.</em></p>
+      </div>
+
+    </div>
+
+    <div class="callout lime">
+      <b>Commercial Alignment:</b> 12 weeks concludes on <b>December 31, 2026</b>, coinciding precisely with Zip's Azure early commit retirement date, ensuring all net-new LMS development lands natively on GCP.
+    </div>
+
+    <button class="btn" onclick="openExplorerSection('planning')" style="font-size:.82em;padding:.4em .8em">
+      📊 View Full WBS Capacity Model in Explorer &rarr;
+    </button>
+  </div>
+  <div class="notes"><b>Key executive verdict:</b> 8 weeks is technically possible but leaves Zip with an orphaned platform. Scenario 3 trains Quantium and Zip engineers to run it permanently.</div>
+</section>
+
+<!-- ============ 14. ACT 4 · PROGRESSIVE LADDER & RACI ============ -->
+<section class="slide" data-slug="Act 4 · Ownership Ladder &amp; RACI">
+  <span class="kicker">Act 4: Phased Implementation &middot; Collaboration Model</span>
+  <h2>4-Stage Progressive Ownership Ladder &amp; RACI</h2>
+  <p class="lede">Handover is not a sudden code dump at Week 12. It is an intentional 4-stage operational transfer starting in Week 5.</p>
+  <div class="body scroll">
+    <div class="cols" style="margin-bottom:1em">
+      
+      <div>
+        <div class="card good" style="margin-bottom:.8em">
+          <h3>The 4-Stage Progressive Ownership Ladder</h3>
+          <ul class="clean" style="font-size:.83em">
+            <li><b>Weeks 1–4 · Stage 1:</b> FDE Drives &middot; Zip/Quantium Observes <em>(GKE, Temporal, Registry)</em></li>
+            <li><b>Weeks 5–8 · Stage 2:</b> FDE Drives &middot; Zip/Quantium Pairs <em>(Repayments Dry Run 1, Isolated TDD)</em></li>
+            <li><b>Weeks 9–10 · Stage 3:</b> Zip/Quantium Drives &middot; FDE Pairs <em>(Repayments Dry Run 2, Co-Delivery)</em></li>
+            <li><b>Weeks 11–12 · Stage 4:</b> Zip/Quantium Owns &middot; FDE Observes <em>(Unassisted Run, DoD Sign-Off)</em></li>
+          </ul>
+        </div>
+      </div>
+
+      <div>
+        <table style="font-size:.78em">
+          <thead><tr><th>Workstream</th><th>FDE</th><th>Zip Arch</th><th>Quantium</th><th>Zip SWE</th><th>Exec</th></tr></thead>
+          <tbody>
+            <tr><td>GKE Substrate &amp; Control Plane</td><td style="color:var(--zip-purple);font-weight:700">R</td><td>C</td><td>I</td><td>I</td><td>A</td></tr>
+            <tr><td>SDLC Harness &amp; 10 Personas</td><td style="color:var(--zip-purple);font-weight:700">R</td><td>C</td><td>C</td><td>C</td><td>A</td></tr>
+            <tr><td>Repayments Pilot Run (Iter 1)</td><td style="color:var(--zip-purple);font-weight:700">R</td><td>C</td><td>C</td><td>C</td><td>A</td></tr>
+            <tr><td>Historical Replay ($0.00 Drift)</td><td>C</td><td>C</td><td style="color:var(--zip-purple);font-weight:700">R</td><td style="color:var(--zip-purple);font-weight:700">R</td><td>A</td></tr>
+            <tr><td>Repayments Pilot Run (Iter 2)</td><td>C</td><td style="color:var(--zip-purple);font-weight:700">R</td><td style="color:var(--zip-purple);font-weight:700">R</td><td style="color:var(--zip-purple);font-weight:700">R</td><td>A</td></tr>
+            <tr><td>Unassisted Factory Run (GA)</td><td>I</td><td>A</td><td style="color:var(--zip-purple);font-weight:700">R</td><td style="color:var(--zip-purple);font-weight:700">R</td><td>A</td></tr>
+            <tr><td>LMS Scaling W13+ (Domains 2–5)</td><td>—</td><td>A</td><td style="color:var(--zip-purple);font-weight:700">R</td><td style="color:var(--zip-purple);font-weight:700">R</td><td>A</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+    <div class="callout">
+      <b>Single Point of Accountability:</b> Clearly defined RACI roles eliminate blurred responsibilities between Google FDE, Zip Engineering, and Quantium delivery leads.
+    </div>
+  </div>
+  <div class="notes"><b>Ownership transfer:</b> By Week 9, Quantium and Zip are writing the specs and triggering the runs. Google FDE acts as technical advisor.</div>
+</section>
+
+<!-- ============ 15. ACT 4 · 12-WEEK SCHEDULE & HANDOVER ============ -->
+<section class="slide" data-slug="Act 4 · 12-Week Schedule">
+  <span class="kicker">Act 4: Phased Implementation &middot; Execution Schedule</span>
+  <h2>12-Week Implementation Schedule &amp; Handover Pack</h2>
+  <p class="lede">A synchronized, week-by-week work breakdown structure spanning October 1 to December 31, 2026, delivering an enterprise-certified software factory.</p>
+  <div class="body scroll">
+    
+    <table style="font-size:.78em;margin-bottom:1em">
+      <thead><tr><th>Week</th><th>Track A: Platform Substrate</th><th>Track B: SDLC &amp; Personas</th><th>Track C: Repayments Pilot &amp; Replay</th><th>Gate</th></tr></thead>
+      <tbody>
+        <tr><td><b>W1–W2</b></td><td>Terraform VPC, GKE Enterprise, Cloud SQL</td><td>Artifacts A–F JSON Schema contracts</td><td>Snowflake historical data extraction setup</td><td><span class="pill int">M1 (W2)</span></td></tr>
+        <tr><td><b>W3–W4</b></td><td>Temporal engine, Cloud Run sandboxes</td><td>Vertex AI Gateway, Claude/Gemini routing</td><td>Amortization formulas &amp; Reg Z disclosure rules</td><td>—</td></tr>
+        <tr><td><b>W5–W6</b></td><td>Node.js 22 MCP Hub, &lt;750ms kill switch</td><td>10 MVP Personas, zero-code TDD runner</td><td>Repayments Iteration 1 codegen &amp; test run</td><td><span class="pill int">M2 (W5)</span></td></tr>
+        <tr><td><b>W7–W8</b></td><td>GKE Service Mesh, Istio side-effect proxy</td><td>Red Team adversarial challenge personas</td><td>50k historical loans replay ($0.00 zero drift)</td><td><span class="pill led">M3 (W8)</span></td></tr>
+        <tr><td><b>W9–W10</b></td><td>Pub/Sub dual ingestion pipeline from Azure</td><td>Zip/Quantium engineer pairing &amp; dry run</td><td>Repayments Iteration 2: Edge cases &amp; fees</td><td>—</td></tr>
+        <tr><td><b>W11–W12</b></td><td>Production hardening, CIS GKE audit</td><td>Runbooks, ADRs, and Operator Certification</td><td>Unassisted dry run: 0 FDE touches; GA sign-off</td><td><span class="pill good">M4 (W12)</span></td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout good">
+      <b>Certified Factory Handover Pack:</b> 8 formal deliverables (ADRs, Terraform IaC, Specification templates, 10 Persona evals, Isolated TDD runner, Runbooks, Historical Replay Pipeline, Operator Certification) signed off before FDE departure.
+    </div>
+
+    <button class="btn" onclick="openExplorerSection('planning')" style="font-size:.82em;padding:.4em .8em">
+      🗓️ View Full 12-Week Schedule in Explorer &rarr;
+    </button>
+  </div>
+  <div class="notes"><b>Confidence builder:</b> Everything is scheduled to the week with clear track parallelization.</div>
+</section>
+
+<!-- ============ 16. ACT 4 · 18-MONTH MASTER HORIZON ============ -->
+<section class="slide" data-slug="Act 4 · 18-Month Roadmap">
+  <span class="kicker">Act 4: Phased Implementation &middot; Long-Term Vision</span>
+  <h2>The 18-Month Core LMS Modernisation Roadmap</h2>
+  <p class="lede">Project Catalyst establishes the factory in Q4 2026. The factory then scales across all five consumer lending domains in 2027, leading to full Azure monolith decommission.</p>
+  <div class="body scroll">
+    <div class="cols" style="margin-bottom:1em">
+      
+      <div class="card">
+        <h3><span class="num">1</span>Phase 1: Factory MVP (Q4 2026)</h3>
+        <p style="font-size:.83em">Substrate build, 10 MVP personas, and Repayments Engine pilot. <b>Milestone: Dec 31, 2026 Factory GA &amp; Azure Commit Expiry.</b></p>
+      </div>
+
+      <div class="card lime">
+        <h3><span class="num">2</span>Phase 2: Domain Scaling (Q1–Q2 2027)</h3>
+        <p style="font-size:.83em">Quantium and Zip squads scale the factory across remaining 4 domains: Decisioning, Loan Origination, Customer Master, Merchant Engine.</p>
+      </div>
+
+      <div class="card good">
+        <h3><span class="num">3</span>Phase 3: Live Shadow Mirroring (Q3 2027)</h3>
+        <p style="font-size:.83em">Dual-ingestion streaming from Azure monolith into GCP. Enforcing 14 consecutive clean days of zero financial drift at scale.</p>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">4</span>Phase 4: Production Cutover (Q4 2027+)</h3>
+        <p style="font-size:.83em">Progressive canary DNS cutover (1% ➔ 10% ➔ 50% ➔ 100%). Decommissioning Azure monolith and entering autonomous self-annealing.</p>
+      </div>
+
+    </div>
+
+    <div class="callout lime">
+      <b>The Compounding Economic Flywheel:</b> As domain knowledge compounds in the factory, the cost per microservice decreases by 30% per cycle ($Cycle_{N+1} \le 0.70 \cdot Cycle_N$), dramatically outpacing traditional manual engineering.
+    </div>
+
+    <button class="btn" onclick="openExplorerSection('planning')" style="font-size:.82em;padding:.4em .8em">
+      🗺️ View Full 18-Month Program Roadmap &rarr;
+    </button>
+  </div>
+  <div class="notes"><b>Executive vision:</b> Shows how the 12-week FDE engagement unlocks the entire multi-million dollar core banking transformation.</div>
+</section>
+
+<!-- ============ 17. EXECUTIVE CONCLUSION & PROGRAM GOVERNANCE ============ -->
+<section class="slide" data-slug="Conclusion &amp; Decision">
+  <span class="kicker">Executive Read-Back &middot; Transformation Summary</span>
+  <h2>The Compounding Autonomous Software Factory</h2>
+  <p class="lede">Project Catalyst replaces manual software development with a mathematically verifiable, self-improving manufacturing asset on Google Cloud Platform.</p>
+  <div class="body scroll">
+    
+    <div class="cols3" style="margin-bottom:1.2em">
+      
+      <div class="card good">
+        <h3>1. Velocity with Certainty</h3>
+        <p style="font-size:.83em">Feature cycles drop from multi-month waterfall sprints to hours of autonomous generation bounded by rigid mathematical and regulatory quality gates.</p>
+      </div>
+
+      <div class="card good">
+        <h3>2. Bank-Grade Compliance</h3>
+        <p style="font-size:.83em">Every code change links to an immutable signed evidence pack with specification diffs, test logs, and regulator-ready verification hashes for OCC/CFPB examiners.</p>
+      </div>
+
+      <div class="card good">
+        <h3>3. Sovereign Capability</h3>
+        <p style="font-size:.83em">The 12-week sequential handover guarantees Zip and Quantium own and operate the factory in perpetuity, eliminating vendor lock-in.</p>
+      </div>
+
+    </div>
+
+    <div class="card" style="background:#1B0436;border:2px solid var(--zip-lime);padding:1.2rem;margin-bottom:1rem">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem">
+        <div>
+          <h3 style="color:#FFF;font-size:1.15rem;margin:0">Explore the Complete Architecture Suite</h3>
+          <p style="color:#D8CCE8;font-size:.84rem;margin-top:.2rem">Switch to the dynamic explorer, view the original whiteboard scans, or inspect the 3 delivery scenarios.</p>
+        </div>
+        <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="setAppMode('explorer')" style="font-weight:800">
+            ⚡ Open Factory Explorer Suite
+          </button>
+          <button class="btn" onclick="openExplorerSection('planning')" style="background:#24044B;border-color:var(--zip-lime);color:var(--zip-lime)">
+            📊 Scoping &amp; 3 Scenarios
+          </button>
+          <a href="archived-readback-deck.html" target="_blank" class="btn" style="background:#1C0438;border-color:#7B2CBF;color:#D8B4FE;text-decoration:none">
+            📦 View Archived 33-Slide Deck ↗
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="notes"><b>Closing call to action:</b> Recommend aligning on Scenario 3 (12-Week Handover) to ensure Quantium co-delivery and cent-for-cent financial proof.</div>
+</section>
+
+</div><!-- /#deck -->
+
+<div id="bar"></div>
+<div id="slug"></div>
+<div id="chrome">
+  <button id="prev" title="Previous (&larr;)">&#8249;</button>
+  <button id="next" title="Next (&rarr;)">&#8250;</button>
+  <span id="count"></span>
+</div>
+
+<div id="ov"><h2>Slide overview</h2><div class="ov-grid" id="ovGrid"></div></div>
+
+<script>
+// ==============================================================================
+// ZIP AGENTIC FACTORY — STORYLINE PRESENTATION DECK CONTROLLER
+// ==============================================================================
+
+// --- Theme Management ---
+function setAppTheme(themeName) {
+  if (themeName === 'mono-bw') {
+    document.body.classList.add('theme-mono-bw');
+    var bM = document.getElementById('btnDeckThemeMono');
+    var bZ = document.getElementById('btnDeckThemeZip');
+    if (bM) { bM.style.background = '#FFF'; bM.style.color = '#000'; }
+    if (bZ) { bZ.style.background = 'transparent'; bZ.style.color = '#FFF'; }
+  } else {
+    document.body.classList.remove('theme-mono-bw');
+    var bM = document.getElementById('btnDeckThemeMono');
+    var bZ = document.getElementById('btnDeckThemeZip');
+    if (bZ) { bZ.style.background = 'var(--zip-lime)'; bZ.style.color = 'var(--zip-midnight)'; }
+    if (bM) { bM.style.background = 'transparent'; bM.style.color = '#D3C7E8'; }
+  }
+  try { localStorage.setItem('zip_app_theme', themeName); } catch(e){}
+  try {
+    var iframe = document.getElementById('explorerIframe');
+    if (iframe && iframe.contentWindow && iframe.contentWindow.setAppTheme) {
+      iframe.contentWindow.setAppTheme(themeName);
+    }
+  } catch(e){}
+}
+window.setAppTheme = setAppTheme;
+
+// --- App Mode Switcher (Slide Deck vs Factory Explorer) ---
+let currentAppMode = 'deck';
+window.currentAppMode = currentAppMode;
+
+function setAppMode(mode, targetPhaseIdx) {
+  currentAppMode = mode;
+  window.currentAppMode = mode;
+  document.body.classList.toggle('explorer-active', mode === 'explorer');
+  var bExp = document.getElementById('btnNavExplorer');
+  var bDeck = document.getElementById('btnNavDeck');
+  if (bExp) bExp.classList.toggle('active', mode === 'explorer');
+  if (bDeck) bDeck.classList.toggle('active', mode === 'deck');
+
+  var iframe = document.getElementById('explorerIframe');
+  if (mode === 'explorer') {
+    if (typeof targetPhaseIdx === 'number') {
+      if (iframe) iframe.src = 'factory-explorer.html#pipeline';
+    }
+  } else {
+    try {
+      var activeSlide = document.querySelector('.slide.active');
+      var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+      var idx = slides.indexOf(activeSlide);
+      location.hash = 's' + (idx >= 0 ? idx + 1 : 1);
+    } catch(e){}
+  }
+}
+window.setAppMode = setAppMode;
+
+function openExplorerSection(secId) {
+  setAppMode('explorer');
+  var iframe = document.getElementById('explorerIframe');
+  if (iframe) {
+    try {
+      if (iframe.contentWindow && iframe.contentWindow.switchSection) {
+        iframe.contentWindow.switchSection(secId);
+        return;
+      }
+    } catch(e){}
+    iframe.src = 'factory-explorer.html#' + secId;
+  }
+}
+window.openExplorerSection = openExplorerSection;
+
+// --- Homepage Navigation & 'H' Shortcut ---
+function goHome() {
+  setAppMode('deck');
+  if (window.show) {
+    window.show(0);
+  }
+  try { location.hash = 's1'; } catch(e){}
+  var iframe = document.getElementById('explorerIframe');
+  if (iframe) {
+    iframe.src = 'factory-explorer.html#home';
+  }
+}
+window.goHome = goHome;
+window.showSlide = function(n) { if (window.show) window.show(n - 1); };
+
+window.addEventListener('keydown', function(e) {
+  if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable)) {
+    return;
+  }
+  if (e.key === 'h' || e.key === 'H') {
+    e.preventDefault();
+    goHome();
+  }
+});
+
+// --- Slide Deck Engine ---
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var i = 0;
+  var bar = document.getElementById('bar');
+  var count = document.getElementById('count');
+  var slug = document.getElementById('slug');
+  var ovGrid = document.getElementById('ovGrid');
+
+  function show(n){
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function(s, k){ s.classList.toggle('active', k === i); });
+    if (bar) bar.style.width = ((i + 1) / slides.length * 100) + '%';
+    if (count) count.textContent = (i + 1) + ' / ' + slides.length;
+    if (slug) {
+      slug.textContent = slides[i].dataset.slug || '';
+      slug.style.color = (i === 0) ? '#EADFFA' : '#B9B2CC';
+    }
+    try { location.hash = 's' + (i + 1); } catch(e){}
+    slides[i].scrollTop = 0;
+  }
+  window.show = show;
+
+  slides.forEach(function(s, k){
+    var d = document.createElement('div');
+    d.className = 'ov-item';
+    d.innerHTML = '<b>' + (k + 1) + '</b>' + (s.dataset.slug || '');
+    d.onclick = function(){ document.body.classList.remove('ov-on'); show(k); };
+    if (ovGrid) ovGrid.appendChild(d);
+  });
+
+  var pBtn = document.getElementById('prev');
+  var nBtn = document.getElementById('next');
+  if (pBtn) pBtn.onclick = function(){ show(i - 1); };
+  if (nBtn) nBtn.onclick = function(){ show(i + 1); };
+
+  document.addEventListener('keydown', function(e){
+    if (window.currentAppMode === 'explorer') return;
+    if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable)) return;
+    var k = e.key;
+    if (k === 'ArrowRight' || k === 'PageDown' || k === ' ') { e.preventDefault(); show(i + 1); }
+    else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); show(i - 1); }
+    else if (k === 'Home') { show(0); }
+    else if (k === 'End') { show(slides.length - 1); }
+    else if (k === 's' || k === 'S') { document.body.classList.toggle('notes-on'); }
+    else if (k === 'o' || k === 'O') { document.body.classList.toggle('ov-on'); }
+    else if (k === 'Escape') { document.body.classList.remove('ov-on'); }
+    else if (k === 'f' || k === 'F') {
+      if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen();
+      } else if (document.exitFullscreen) { document.exitFullscreen(); }
+    }
+  });
+
+  // Theme on load
+  var savedTheme = 'zip-color';
+  try { savedTheme = localStorage.getItem('zip_app_theme') || 'zip-color'; } catch(e){}
+  setAppTheme(savedTheme);
+
+  // Hash check on load
+  var m = (location.hash || '').match(/^#s(\d+)$/);
+  show(m ? (parseInt(m[1], 10) - 1) : 0);
+})();
+</script>
+</body>
+</html>

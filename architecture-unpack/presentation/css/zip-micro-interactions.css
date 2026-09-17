@@ -1,0 +1,470 @@
+/* ==============================================================================
+   ZIP AGENTIC FACTORY — TACTILE MOTION PHYSICS & MICRO-INTERACTIONS (TRACK A)
+   Crafted with Emil Kowalski's Design Engineering Philosophy & Zip 2024 Brand Guidelines
+   Core Palette: #FFFFFA (Control), #1A0826 (Confidence), #AA8FFF (Fearlessness),
+                 #6542BE (Medium Iris), #462B54 (Secondary Ink)
+   ============================================================================== */
+
+:root {
+  /* Emil Kowalski Custom Timing Curves */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-snappy: cubic-bezier(0.23, 1, 0.32, 1);
+
+  /* Asymmetric Timing Durations (Under 300ms UI Rule) */
+  --duration-press: 110ms;
+  --duration-hover: 160ms;
+  --duration-enter: 220ms;
+  --duration-exit: 140ms;
+}
+
+/* ==============================================================================
+   1. TACTILE BUTTON & CONTROL INTERACTIONS (EXPLICIT PROPERTIES ONLY)
+   ============================================================================== */
+.btn,
+.nav-item,
+.drawer-tab,
+.pill-interactive {
+  transition:
+    transform var(--duration-hover) var(--ease-out-expo),
+    background-color var(--duration-hover) ease,
+    border-color var(--duration-hover) ease,
+    box-shadow var(--duration-hover) var(--ease-out-expo),
+    color var(--duration-hover) ease;
+  will-change: transform;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(26, 8, 38, 0.08);
+  }
+}
+
+.btn:active,
+.nav-item:active,
+.drawer-tab:active {
+  transform: scale(0.98);
+  transition-duration: var(--duration-press);
+}
+
+.btn:focus-visible,
+.nav-item:focus-visible,
+.drawer-tab:focus-visible,
+input:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--zip-fearlessness, #AA8FFF);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(170, 143, 255, 0.28);
+}
+
+/* ==============================================================================
+   2. CARD MICRO-INTERACTIONS & -7DEG ZIP BRAND BADGE PHYSICS
+   ============================================================================== */
+.card,
+.phase-card,
+.bento-card {
+  transition:
+    transform 200ms var(--ease-spring),
+    border-color 180ms ease,
+    box-shadow 200ms var(--ease-out-expo);
+}
+
+/* Signature -7deg Zip Brand Pocket & Badges */
+.zip-badge-tilt,
+.pill-fearless,
+.nav-badge {
+  display: inline-flex;
+  align-items: center;
+  transition:
+    transform 200ms var(--ease-spring),
+    background-color 160ms ease,
+    border-color 160ms ease;
+  transform-origin: center;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card:hover,
+  .bento-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--zip-fearlessness, #AA8FFF);
+    box-shadow: 0 10px 26px rgba(26, 8, 38, 0.09);
+  }
+
+  .card:hover .pill-fearless,
+  .nav-item:hover .nav-badge,
+  .pill-fearless:hover,
+  .zip-badge-tilt:hover {
+    transform: rotate(-7deg) scale(1.04);
+  }
+}
+
+/* Active Navigation Indicator Bar */
+.nav-item {
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 18%;
+  bottom: 18%;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--zip-medium, #6542BE);
+  transform: scaleY(0);
+  transition: transform 180ms var(--ease-spring);
+}
+
+.nav-item.active::before {
+  transform: scaleY(1);
+}
+
+/* Drawer Tab Indicator Physics */
+.drawer-tab {
+  position: relative;
+}
+
+.drawer-tab::after {
+  content: '';
+  position: absolute;
+  left: 0.5rem;
+  right: 0.5rem;
+  bottom: -1px;
+  height: 2px;
+  background: var(--zip-fearlessness, #AA8FFF);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 180ms var(--ease-spring);
+}
+
+.drawer-tab.active::after {
+  transform: scaleX(1);
+}
+
+/* Smooth View Crossfade with Emil Kowalski 1.5px Blur Bridge */
+.main-stage {
+  transition:
+    opacity 150ms var(--ease-out-expo),
+    filter 150ms var(--ease-out-expo);
+}
+
+.main-stage.view-transitioning {
+  opacity: 0.86;
+  filter: blur(1.5px);
+}
+
+/* ==============================================================================
+   3. ARTIFACT DRAWER BACKDROP, COLLAPSIBLES & SYNTAX HIGHLIGHTING
+   ============================================================================== */
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 8, 38, 0.28);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 35;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-exit) var(--ease-out-expo);
+}
+
+.drawer-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+  transition-duration: var(--duration-enter);
+}
+
+.artifact-drawer {
+  transition:
+    transform var(--duration-exit) var(--ease-out-expo),
+    box-shadow var(--duration-exit) var(--ease-out-expo) !important;
+}
+
+.artifact-drawer.open {
+  transition:
+    transform 260ms var(--ease-drawer),
+    box-shadow 260ms var(--ease-out-expo) !important;
+}
+
+.drawer-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.drawer-collapsible {
+  border: 1px solid var(--zip-lighter, #DBCCFF);
+  border-radius: var(--radius-sm, 6px);
+  margin-bottom: 0.85rem;
+  background: var(--zip-card-bg, #FFFFFF);
+  overflow: hidden;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .drawer-collapsible:hover {
+    border-color: var(--zip-fearlessness, #AA8FFF);
+    box-shadow: 0 2px 8px rgba(26, 8, 38, 0.04);
+  }
+}
+
+/* Staggered Drawer Entrance Items (Emil Kowalski 35ms Stagger Rule) */
+@keyframes zipStaggerSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.drawer-stagger-item {
+  animation: zipStaggerSlideIn 200ms var(--ease-out-expo) both;
+}
+
+.drawer-stagger-item:nth-child(1) { animation-delay: 0ms; }
+.drawer-stagger-item:nth-child(2) { animation-delay: 35ms; }
+.drawer-stagger-item:nth-child(3) { animation-delay: 70ms; }
+.drawer-stagger-item:nth-child(4) { animation-delay: 105ms; }
+
+.drawer-collapsible-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 0.9rem;
+  background: var(--zip-card-elevated, #FAF8FF);
+  border: none;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--zip-text-primary, #1A0826);
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 150ms ease;
+}
+
+.drawer-collapsible-header:hover {
+  background: var(--zip-lightest, #EDE6FF);
+}
+
+.drawer-collapsible-chevron {
+  transition: transform 200ms var(--ease-spring);
+  font-size: 0.75rem;
+  color: var(--zip-medium, #6542BE);
+}
+
+.drawer-collapsible[aria-expanded="true"] .drawer-collapsible-chevron {
+  transform: rotate(180deg);
+}
+
+.drawer-collapsible-body {
+  padding: 0.85rem 0.9rem;
+  border-top: 1px solid var(--zip-lighter, #DBCCFF);
+  font-size: 0.82rem;
+}
+
+.drawer-collapsible[aria-expanded="false"] .drawer-collapsible-body {
+  display: none;
+}
+
+/* JSON / Spec Syntax Highlighting */
+.json-key { color: #AA8FFF; font-weight: 600; }
+.json-string { color: #A7F3D0; }
+.json-number { color: #FDE68A; }
+.json-boolean { color: #F472B6; font-weight: 600; }
+.json-null { color: #9CA3AF; font-style: italic; }
+
+/* ==============================================================================
+   4. SONNER-INSPIRED TOAST NOTIFICATION SYSTEM
+   ============================================================================== */
+.zip-toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  pointer-events: none;
+  max-width: 380px;
+}
+
+.zip-toast {
+  position: relative;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md, 10px);
+  background: var(--zip-confidence, #1A0826);
+  color: var(--zip-control, #FFFFFA);
+  border: 1px solid var(--zip-medium, #6542BE);
+  box-shadow: 0 12px 28px rgba(26, 8, 38, 0.24);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(16px) scale(0.95);
+  transition:
+    opacity var(--duration-exit) var(--ease-out-expo),
+    transform var(--duration-exit) var(--ease-snappy),
+    border-color 150ms ease;
+}
+
+/* Sonner Principle #4: Bridge hover gap between stacked toasts */
+.zip-toast::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.55rem;
+  height: 0.55rem;
+}
+
+.zip-toast.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition:
+    opacity var(--duration-enter) var(--ease-out-expo),
+    transform 240ms var(--ease-spring);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .zip-toast:hover {
+    border-color: var(--zip-fearlessness, #AA8FFF);
+  }
+}
+
+.zip-toast-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.15rem 0.45rem;
+  border-radius: 99px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  background: var(--zip-fearlessness, #AA8FFF);
+  color: var(--zip-confidence, #1A0826);
+  transform: rotate(-7deg);
+}
+
+/* ==============================================================================
+   5. KEYBOARD SHORTCUT HELPER MODAL & PILLS
+   ============================================================================== */
+.kbd-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.55rem;
+  height: 1.45rem;
+  padding: 0 0.42rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--zip-confidence, #1A0826);
+  background: var(--zip-lightest, #EDE6FF);
+  border: 1px solid var(--zip-lighter, #DBCCFF);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  box-shadow: 0 1px 1px rgba(26, 8, 38, 0.06);
+}
+
+.shortcut-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 8, 38, 0.48);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-exit) var(--ease-out-expo);
+}
+
+.shortcut-modal-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+  transition-duration: var(--duration-enter);
+}
+
+.shortcut-modal {
+  width: 520px;
+  max-width: 92vw;
+  background: var(--zip-card-bg, #FFFFFF);
+  border: 1px solid var(--zip-lighter, #DBCCFF);
+  border-radius: var(--radius-lg, 14px);
+  box-shadow: 0 20px 48px rgba(26, 8, 38, 0.18);
+  padding: 1.5rem;
+  transform: scale(0.95);
+  transform-origin: center;
+  transition: transform var(--duration-exit) var(--ease-snappy);
+}
+
+.shortcut-modal-backdrop.open .shortcut-modal {
+  transform: scale(1);
+  transition: transform var(--duration-enter) var(--ease-spring);
+}
+
+.shortcut-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.55rem;
+  margin-top: 1rem;
+}
+
+.shortcut-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.65rem;
+  border-radius: var(--radius-sm, 6px);
+  background: var(--zip-card-elevated, #FAF8FF);
+  border: 1px solid transparent;
+  transition: border-color 140ms ease, background-color 140ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .shortcut-row:hover {
+    border-color: var(--zip-lighter, #DBCCFF);
+    background: var(--zip-lightest, #EDE6FF);
+  }
+}
+
+/* ==============================================================================
+   6. REDUCED MOTION ACCESSIBILITY INVARIANT
+   ============================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .btn:hover,
+  .card:hover,
+  .bento-card:hover,
+  .pill-fearless:hover,
+  .zip-badge-tilt:hover,
+  .main-stage.view-transitioning,
+  .drawer-stagger-item {
+    transform: none !important;
+    filter: none !important;
+    animation: none !important;
+  }
+}

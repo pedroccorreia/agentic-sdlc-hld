@@ -1,0 +1,253 @@
+{
+  "$comment": "Structured extraction of the Zip agentic-factory artifact model, transcribed from 'zip  architecture.pdf' (4 scanned pages). This file is the machine-readable source of truth: the HTML presentation and the Markdown docs are both generated from / kept in sync with it. 'attested' means the value is written on the scan; 'inferred' means it was reasoned from context and needs confirmation.",
+  "source": {
+    "files": [
+      { "file": "zip arc1.pdf",          "document_pages": "1",   "scan_pages": 1, "covers": "setup / environment, the six stages with human gates, open questions Q.1-Q.7" },
+      { "file": "zip  architecture.pdf", "document_pages": "2-5", "scan_pages": 4, "covers": "artifacts, negotiation file, agents & rating, documentation loops, control plane, open action items" }
+    ],
+    "total_document_pages": 5,
+    "nature": "scanned handwritten architecture notes, no text layer",
+    "page_order_note": "zip arc1.pdf is document page 1 and was supplied separately. Its insertion resolves the numbering mismatch: scan page 3 of the 4-page PDF is labelled 'Page 4' by the author, which is correct once page 1 is counted. No page is missing.",
+    "transcribed": "2026-08-31"
+  },
+
+  "setup_environment": {
+    "$comment": "Source: zip arc1.pdf (document page 1). Appears on no other page.",
+    "repository": {
+      "host": "GitHub",
+      "maintained_by": "Engineering / Architecture team",
+      "flow": "engineering/arch team pushes; Dev1..Dev3 pull",
+      "carries": {
+        "name": "Skills Agent",
+        "equals": "Zip SDLC Principles",
+        "note": "the mechanism by which Zip house rules reach every agent - undefined beyond this callout (PL-36)"
+      }
+    },
+    "toolchain": ["Antigravity", "Antigravity CLI", "VS Code", "gcloud", "Terraform"],
+    "cloud": {
+      "provider": "Google Cloud",
+      "responsibilities": ["Deploy infrastructure", "Run tests"],
+      "persistence": [
+        { "store": "Cloud SQL", "holds": "scoring runs" },
+        { "store": "Cloud Storage", "holds": "artefacts storage" }
+      ]
+    },
+    "integration_surface": {
+      "$comment": "Materially expands agent blast radius beyond the repo - see PL-35.",
+      "servers": ["Jira MCP Server", "Slack", "Custom MCP"]
+    }
+  },
+
+  "human_gates": [
+    { "between": "(1) Specify -> (2) Dispatch", "gate": "PRD GO / NO-GO" },
+    { "at": "(4) Review", "gate": "Approve / Not approve + Reason", "also_produces": ["Score agent", "Feedback register"] },
+    { "at": "(5) Verify", "gate": "persona attached to Build / Results" }
+  ],
+
+  "open_questions_page1": [
+    { "id": "Q.1", "question": "Spec format - .md?",                                        "refers_to": "reviewed PRD entering Dispatch", "parking_lot": "PL-26" },
+    { "id": "Q.2", "question": "Centralized kill switch",                                   "refers_to": "Generate - how to do it centrally", "parking_lot": "PL-27" },
+    { "id": "Q.3", "question": "How to control a Generate run",                             "refers_to": "Dispatch -> Generate", "parking_lot": "PL-28" },
+    { "id": "Q.4", "question": "Unit test in disposable sandboxes",                         "refers_to": "Generate - parallel agent execution", "parking_lot": "PL-29" },
+    { "id": "Q.5", "question": "Score should be user feedback + data driven (pass tests)",  "refers_to": "Review - scoring", "parking_lot": "PL-30" },
+    { "id": "Q.6", "question": "Where is their documentation",                              "refers_to": "Specify - checking existing docs", "parking_lot": "PL-31" },
+    { "id": "Q.7", "question": "Multi-Model Inference on Vertex AI",                                        "refers_to": "Generate", "parking_lot": "PL-32", "note": "commercial/strategic rather than technical" }
+  ],
+
+  "phases": [
+    { "number": 1, "name": "Specify",             "attested": true,  "produces": ["BRD"],                          "notes": "Reads existing documentation as context (upstream documentation loop)." },
+    { "number": 2, "name": "Dispatch",            "attested": true,  "produces": ["PRD", "Project Assignment"],    "notes": "Named as a phase with defined personas/sub-processes in Open Action Item 2." },
+    { "number": 3, "name": "Generate",            "attested": true,  "produces": [],                               "notes": "Agents build. Annotated against Project Assignment on page 1." },
+    { "number": 4, "name": "Review",              "attested": true,  "produces": ["Score", "Feedback register", "Approve / Not approve + Reason"], "notes": "ATTESTED on document page 1 (zip arc1.pdf): 'reviews the Build Report and provides a score'. Previously an inference; PL-01 now resolved." },
+    { "number": 5, "name": "Verify",              "attested": true,  "produces": ["Build Report"],                 "notes": "Emits 'build results' into phase 6." },
+    { "number": 6, "name": "Ship & Observe",      "attested": true,  "produces": ["Final Report"],                 "notes": "Documentation update may run as part of this phase." },
+    { "number": 7, "name": "Update Documentation","attested": true,  "produces": [],                               "notes": "Explicitly 'as part of Phase 6 or as a parallel phase 7'. Closes the loop back into phase 1." }
+  ],
+
+  "artifacts": [
+    {
+      "key": "BRD",
+      "label": "BRD",
+      "letter": "A",
+      "visibility": "external",
+      "formats": ["txt", "md", "doc", "pdf"],
+      "origin": "HUMAN CURATED / AI GENERATED",
+      "description": "A business-user-level understanding of the LMS component to be designed.",
+      "in_registry": true,
+      "metadata": [
+        { "field": "ID",            "type": "id" },
+        { "field": "creation date", "type": "date" }
+      ],
+      "produced_in_phases": [1]
+    },
+    {
+      "key": "PRD",
+      "label": "PRD",
+      "letter": "B",
+      "visibility": "external",
+      "origin": "AI GENERATED / APPROVED BY HUMAN",
+      "description": "Translates the BRD into a PRD and creates the set of tasks that will be executed.",
+      "in_registry": true,
+      "contents": [
+        "RESTRICTIONS / GUARDRAILS (architectural inputs)",
+        "UNIT TEST STRATEGY",
+        "TARGET TECHNOLOGY",
+        "STACK IMPACT (which part of LMS)"
+      ],
+      "metadata": [
+        { "field": "BRD_ID",              "type": "foreign_key", "references": "BRD.ID" },
+        { "field": "creation date",       "type": "date" },
+        { "field": "review cycles",       "type": "array", "subfields": ["FEEDBACK", "REVIEW"] },
+        { "field": "components impacted", "type": "array" },
+        { "field": "target technology",   "type": "array" }
+      ],
+      "produced_in_phases": [2]
+    },
+    {
+      "key": "ProjectAssignment",
+      "label": "Project Assignment",
+      "letter": "C",
+      "visibility": "internal",
+      "description": "A service that applies deterministic rules to decide how an agent gets assigned to tasks.",
+      "in_registry": true,
+      "shape": "Agent1 -> [task1, task2]; Agent2 -> [task1, task2]",
+      "metadata": [
+        { "field": "BRD ID",        "type": "foreign_key", "references": "BRD.ID" },
+        { "field": "creation date", "type": "date" },
+        { "field": "Agent X [tasks] assignment reasoning", "type": "nested_array" }
+      ],
+      "produced_in_phases": [2, 3]
+    },
+    {
+      "key": "BuildReport",
+      "label": "Handover / Build Report",
+      "letter": "D",
+      "visibility": "external",
+      "description": "A record of what was accomplished, per agent and per task.",
+      "in_registry": true,
+      "contents": ["summary", "test results"],
+      "metadata": [
+        { "field": "Project_ID",    "type": "foreign_key" },
+        { "field": "creation_date", "type": "date" },
+        { "field": "TIME FINISHED", "type": "datetime" },
+        { "field": "review cycles", "type": "array", "subfields": ["FEEDBACK", "Actions"] },
+        { "field": "SCORE",         "type": "number" }
+      ],
+      "produced_in_phases": [5]
+    },
+    {
+      "key": "FinalReport",
+      "label": "Final Report",
+      "letter": "E",
+      "visibility": "external",
+      "description": "Final output of results.",
+      "in_registry": true,
+      "contents": ["Integration test results", "Load balancing", "Adversarial"],
+      "metadata": [
+        { "field": "Project ID", "type": "foreign_key" }
+      ],
+      "produced_in_phases": [6]
+    },
+    {
+      "key": "NegotiationFile",
+      "label": "Negotiation File",
+      "aka": "Decision Registry",
+      "letter": "F",
+      "visibility": "internal",
+      "description": "A ledger of feedback between Entity A and Entity B, where A and B are each either Human or Agent. Used across different phases.",
+      "in_registry": true,
+      "role": "side-car ledger - attaches to artifacts, is not a stage in the pipeline",
+      "metadata": [
+        { "field": "phase",      "type": "string" },
+        { "field": "entity A",   "type": "enum", "values": ["Human", "Agent"] },
+        { "field": "entity B",   "type": "enum", "values": ["Human", "Agent"] },
+        { "field": "date raised","type": "date" },
+        { "field": "FEEDBACK",   "type": "text" },
+        { "field": "Decision",   "type": "text" }
+      ],
+      "produced_in_phases": []
+    }
+  ],
+
+  "dependencies": {
+    "$comment": "From scan page 2, 'DEP FOR ARTIFACTS'.",
+    "solid": [
+      { "from": "BRD", "to": "PRD" },
+      { "from": "PRD", "to": "ProjectAssignment" },
+      { "from": "ProjectAssignment", "to": "FinalReport" },
+      { "from": "ProjectAssignment", "to": "BuildReport" }
+    ],
+    "dashed_negotiation": [
+      { "from": "BRD", "to": "NegotiationFile" },
+      { "from": "PRD", "to": "NegotiationFile" },
+      { "from": "NegotiationFile", "to": "ProjectAssignment" },
+      { "from": "FinalReport", "to": "NegotiationFile", "confidence": "uncertain" }
+    ]
+  },
+
+  "agent_model": {
+    "cardinality": "TO BE DEFINED (explicit note on scan page 2)",
+    "definition": {
+      "description": "free text",
+      "tech": ["GKE", "DATA", "Agents"],
+      "tech_note": "when to choose this",
+      "deployment": {
+        "path": "local -> cloud",
+        "assets": ["Skills", "Scripts", "Agents.MD"],
+        "vcs": "github repo"
+      }
+    },
+    "registry": {
+      "shape": "2x2 grid of agents (A1, A2, A3, A4) - illustrative, not a real cardinality",
+      "principle": "Registry has a deterministic way of choosing agents",
+      "consumed_by": "Project Assignment service"
+    },
+    "record": [
+      { "field": "Description",         "type": "text" },
+      { "field": "Use when",            "type": "text", "role": "selection criterion the registry keys off" },
+      { "field": "# of times deployed", "type": "counter" },
+      { "field": "Successful runs",     "type": "counter" },
+      { "field": "Rating",              "type": "composite" }
+    ],
+    "rating": {
+      "quantitative": "inferred from test bugs associated",
+      "qualitative": "user provided"
+    }
+  },
+
+  "control_plane": {
+    "dispatch": "operator laptop -> control plane",
+    "approve": "control plane -> operator laptop (dashed, human-in-the-loop gate)",
+    "components": ["Orchestrator", "Registry (persistent state / database)"],
+    "console_panels": [
+      { "panel": "Agents Running",        "example_value": 6 },
+      { "panel": "Agents Completed",      "example_value": 7 },
+      { "panel": "tasks in flight" },
+      { "panel": "List of running agents", "actions": ["kill"] }
+    ],
+    "observability": {
+      "backends": ["Cloud Logging", "Cloud Monitoring"],
+      "derived": [
+        { "name": "Analytics on Agent Performance", "signals": ["token usage", "tool calling"] },
+        { "name": "Error Monitoring" }
+      ]
+    }
+  },
+
+  "documentation_loops": {
+    "downstream": {
+      "label": "As part of Phase 6, or as a parallel Phase 7",
+      "flow": ["(5) Verify", "(6) Ship & Observe", "(7) Update documentation"],
+      "rule": "With all artifacts, check what part of functional & technical documentation should be updated.",
+      "risk": "Documentation drift is an issue"
+    },
+    "upstream": {
+      "label": "Support the PRD creation",
+      "flow": ["(1) Specify", "(2) Dispatch"],
+      "rules": [
+        "Check existing documentation to build things in context",
+        "Produces a stronger, more fit-for-purpose PRD"
+      ]
+    }
+  }
+}

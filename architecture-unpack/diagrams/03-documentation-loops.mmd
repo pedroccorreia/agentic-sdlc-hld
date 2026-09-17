@@ -1,0 +1,36 @@
+%% Documentation as a closed loop — source: scan page 3, "Documentation"
+%% Downstream leg: what phase 7 writes out.
+%% Upstream leg:   what phase 1 reads back in.
+%% The whole point of the page is that these are the same body of documentation.
+
+graph LR
+    subgraph DOWN["(L) DOWNSTREAM — part of Phase 6, or a parallel Phase 7"]
+        direction LR
+        V["<b>(5) Verify</b>"]
+        S["<b>(6) Ship &amp; Observe</b>"]
+        U["<b>(7) Update documentation</b><br/><i>check what part of functional &amp;<br/>tech documentation should update</i>"]
+        V -->|build results| S --> U
+    end
+
+    subgraph UP["(L) UPSTREAM — support the PRD creation"]
+        direction LR
+        SP["<b>(1) Specify</b>"]
+        D["<b>(2) Dispatch</b><br/><i>check existing docs to build in context</i><br/><i>→ stronger, more fit-for-purpose PRD</i>"]
+        SP -->|BRD| D
+    end
+
+    DOCS[("<b>Documentation</b><br/>functional + technical")]
+
+    U ==>|writes| DOCS
+    DOCS ==>|reads as context| SP
+
+    DRIFT["⚠ <b>Documentation drift is an issue</b>"]
+    DOCS -.-> DRIFT
+
+    classDef phase fill:#EAF2FF,stroke:#1A73E8,stroke-width:2px,color:#0B1F3B;
+    classDef store fill:#E6F4EA,stroke:#137333,stroke-width:2px,color:#0A2E17;
+    classDef warn  fill:#FFE9E9,stroke:#D93025,stroke-width:2px,color:#5B0A05;
+
+    class V,S,U,SP,D phase;
+    class DOCS store;
+    class DRIFT warn;

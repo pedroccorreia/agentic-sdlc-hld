@@ -1,0 +1,50 @@
+%% Control plane, monitoring & logging — source: scan page 3
+%% Solid  = dispatch / data flow
+%% Dashed = human-in-the-loop approval and derived analytics
+
+graph TB
+    LAPTOP["💻 <b>Operator</b><br/><i>laptop</i>"]
+
+    subgraph CP["Control Plane"]
+        direction TB
+        ORCH["<b>Orchestrator</b>"]
+        DB[("<b>Registry</b><br/><i>persistent state</i>")]
+        ORCH --- DB
+    end
+
+    subgraph CONSOLE["Operator console"]
+        direction TB
+        R["<b>Agents Running</b> — e.g. 6"]
+        C["<b>Agents Completed</b> — e.g. 7"]
+        T["<b>tasks in flight</b>"]
+        K["<b>List of running agents</b><br/>with <b>kill</b> action"]
+    end
+
+    LOG["<b>Cloud Logging</b>"]
+    MON["<b>Cloud Monitoring</b>"]
+
+    PERF["<b>Analytics on Agent Performance</b><br/><i>token usage · tool calling</i>"]
+    ERR["<b>Error Monitoring</b>"]
+
+    LAPTOP -->|dispatch| ORCH
+    ORCH -.->|approve| LAPTOP
+
+    CP --> CONSOLE
+    LAPTOP -.->|observes| CONSOLE
+
+    ORCH --> LOG
+    ORCH --> MON
+    LOG -.-> PERF
+    MON -.-> PERF
+    LOG -.-> ERR
+    MON -.-> ERR
+
+    classDef human fill:#FFF4E5,stroke:#F29900,stroke-width:2px,color:#3B2A00;
+    classDef core  fill:#EAF2FF,stroke:#1A73E8,stroke-width:2px,color:#0B1F3B;
+    classDef gcp   fill:#E6F4EA,stroke:#137333,stroke-width:2px,color:#0A2E17;
+    classDef derived fill:#F3E8FF,stroke:#8430CE,stroke-width:2px,color:#2A0B3B;
+
+    class LAPTOP human;
+    class ORCH,DB,R,C,T,K core;
+    class LOG,MON gcp;
+    class PERF,ERR derived;

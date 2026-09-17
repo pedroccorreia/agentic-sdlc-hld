@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "Double Diamond Design": {
+      "source": "danhvb/my-ba-skills",
+      "sourceType": "github",
+      "skillPath": "multi-agent-ba/.agent/skills/senior-ba/double-diamond-design/SKILL.md",
+      "computedHash": "26afa51bb8009177927ee30ade73a5a305ab6fe7757219e294ff2f69f2f56ed7"
+    }
+  }
+}

@@ -1,0 +1,79 @@
+%% Registry entity model — RECONSTRUCTED, NOT TRANSCRIBED.
+%%
+%% IMPORTANT: the source document does NOT contain an entity-relationship
+%% diagram. Building one is literally Open Action Item #1 ("DER for Registry").
+%% This file is a FIRST DRAFT derived strictly from the metadata fields written
+%% on scan pages 1 and 2, offered as a starting point for that action item.
+%% Every relationship below is an inference and must be confirmed with Zip.
+%% See PARKING_LOT.md PL-02.
+
+erDiagram
+    BRD ||--o{ PRD : "BRD_ID"
+    PRD ||--o{ PROJECT_ASSIGNMENT : "derives"
+    BRD ||--o{ PROJECT_ASSIGNMENT : "BRD_ID"
+    PROJECT_ASSIGNMENT ||--o{ BUILD_REPORT : "Project_ID"
+    PROJECT_ASSIGNMENT ||--o| FINAL_REPORT : "Project_ID"
+    PROJECT_ASSIGNMENT }o--o{ AGENT : "assigns tasks to"
+    NEGOTIATION_FILE }o--|| BRD : "raised against"
+    NEGOTIATION_FILE }o--|| PRD : "raised against"
+    NEGOTIATION_FILE }o--|| PROJECT_ASSIGNMENT : "raised against"
+    AGENT ||--o{ AGENT_RATING : "accumulates"
+
+    BRD {
+        id ID PK
+        date creation_date
+        enum origin "HUMAN CURATED | AI GENERATED"
+    }
+
+    PRD {
+        id BRD_ID FK
+        date creation_date
+        array review_cycles "FEEDBACK, REVIEW"
+        array components_impacted
+        array target_technology
+        text restrictions_guardrails
+        text unit_test_strategy
+    }
+
+    PROJECT_ASSIGNMENT {
+        id BRD_ID FK
+        date creation_date
+        array agent_task_assignment_reasoning
+    }
+
+    BUILD_REPORT {
+        id Project_ID FK
+        date creation_date
+        datetime time_finished
+        array review_cycles "FEEDBACK, Actions"
+        number SCORE
+    }
+
+    FINAL_REPORT {
+        id Project_ID FK
+        text integration_test_results
+        text load_balancing
+        text adversarial
+    }
+
+    NEGOTIATION_FILE {
+        string phase
+        string entity_A "Human | Agent"
+        string entity_B "Human | Agent"
+        date date_raised
+        text FEEDBACK
+        text Decision
+    }
+
+    AGENT {
+        text description
+        string tech "GKE | DATA | Agents"
+        text use_when
+        number times_deployed
+        number successful_runs
+    }
+
+    AGENT_RATING {
+        number quantitative "inferred from test bugs"
+        number qualitative "user provided"
+    }

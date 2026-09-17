@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zip Agentic Factory — Architecture Workbench</title>
+  <link rel="stylesheet" href="css/zip-workbench-theme.css">
+  <link rel="stylesheet" href="css/zip-micro-interactions.css">
+  <script src="data/factory_data.js"></script>
+  <script src="data/day_in_the_life_data.js"></script>
+  <script src="data/storyline_data.js"></script>
+  <script src="data/planning_data.js"></script>
+</head>
+<body>
+  <!-- WCAG 2.1 AAA Skip to Main Content Link -->
+  <a href="#mainStage" class="skip-link">Skip to main content</a>
+
+  <!-- Top Command Header -->
+  <header class="top-header" role="banner">
+    <div class="header-brand">
+      <svg class="zip-logo-svg" viewBox="0 0 110 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Zip Official Logo" role="img">
+        <!-- Z -->
+        <path d="M4 6H24V11L11.5 21H24V26H4V21L16.5 11H4V6Z" fill="#1A0826"/>
+        <!-- I pocket rotated -7 degrees in Fearlessness Lilac #AA8FFF -->
+        <g transform="rotate(-7 46 16)">
+          <rect x="36" y="8" width="16" height="18" rx="2" fill="#AA8FFF"/>
+          <circle cx="44" cy="2" r="3.2" fill="#1A0826"/>
+        </g>
+        <!-- P -->
+        <path d="M68 6H84C89.5 6 93 9.5 93 14C93 18.5 89.5 22 84 22H75V26H68V6ZM75 17H83C85.5 17 87 15.8 87 14C87 12.2 85.5 11 83 11H75V17Z" fill="#1A0826"/>
+      </svg>
+      <div class="header-divider" aria-hidden="true"></div>
+      <div class="header-title-group">
+        <span class="header-title">Agentic Factory Architecture</span>
+      </div>
+    </div>
+    <div class="header-actions" role="toolbar" aria-label="Workbench Controls">
+      <button class="btn" type="button" onclick="App.toggleSearch()" aria-label="Open Search Command Palette (Command K)">🔍 Search (⌘K)</button>
+      <button class="btn" id="headerShortcutsBtn" type="button" onclick="App.toggleShortcutModal(true)" aria-label="Keyboard Shortcuts">⌨️ Shortcuts</button>
+      <button class="btn" type="button" onclick="App.toggleTheme()" aria-label="Toggle Light and Dark Theme">🌓 Theme</button>
+      <button class="btn btn-primary" type="button" onclick="App.toggleFullscreen()" aria-label="Toggle Fullscreen Mode">⛶ Fullscreen</button>
+    </div>
+  </header>
+
+  <!-- Main Workbench Body -->
+  <div class="workbench-body">
+    <!-- Left Navigation Rail (#EDE6FF Lightest) -->
+    <nav class="nav-sidebar" id="navSidebar" aria-label="Architecture Views Navigation">
+      <div class="sidebar-section" role="tablist" aria-orientation="vertical" aria-label="Primary Workbench Views">
+        <div class="sidebar-label" id="navPrimaryLabel">Navigation</div>
+        <button type="button" role="tab" id="tab-storyline" aria-selected="true" aria-controls="mainStage" class="nav-item active" data-view="storyline" onclick="App.switchView('storyline')">
+          <span class="nav-icon" aria-hidden="true">📖</span>
+          <span>Executive Storyline</span>
+          <span class="nav-badge" aria-label="20 slides">20</span>
+        </button>
+        <button type="button" role="tab" id="tab-pipeline" aria-selected="false" aria-controls="mainStage" class="nav-item" data-view="pipeline" onclick="App.switchView('pipeline')">
+          <span class="nav-icon" aria-hidden="true">🔄</span>
+          <span>Phases</span>
+          <span class="nav-badge" aria-label="7 phases">7</span>
+        </button>
+        <button type="button" role="tab" id="tab-registry" aria-selected="false" aria-controls="mainStage" class="nav-item" data-view="registry" onclick="App.switchView('registry')">
+          <span class="nav-icon" aria-hidden="true">⚡</span>
+          <span>Skills &amp; Artifacts</span>
+          <span class="nav-badge" aria-label="31 skills">31</span>
+        </button>
+        <button type="button" role="tab" id="tab-simulator" aria-selected="false" aria-controls="mainStage" class="nav-item" data-view="simulator" onclick="App.switchView('simulator')">
+          <span class="nav-icon" aria-hidden="true">⏱️</span>
+          <span>Day in the Life</span>
+          <span class="nav-badge" aria-label="18 steps">18</span>
+        </button>
+        <button type="button" role="tab" id="tab-planning" aria-selected="false" aria-controls="mainStage" class="nav-item" data-view="planning" onclick="App.switchView('planning')">
+          <span class="nav-icon" aria-hidden="true">🗺️</span>
+          <span>Project Plan &amp; Roadmap</span>
+          <span class="nav-badge" aria-label="12W + 18M">Plan</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Center Main Stage (#FFFFFA Control Canvas) -->
+    <main class="main-stage" id="mainStage" role="tabpanel" aria-live="polite" aria-labelledby="tab-storyline" tabindex="-1">
+      <!-- Active view rendered here dynamically by JS controllers -->
+    </main>
+
+    <!-- Right Split-Screen Artifact Inspector Drawer -->
+    <aside class="artifact-drawer" id="artifactDrawer" aria-label="Artifact Inspector Drawer">
+      <div class="drawer-header">
+        <div class="drawer-title-group">
+          <span class="drawer-kicker" id="drawerKicker">Architecture Inspector</span>
+          <span class="drawer-title" id="drawerTitle">Artifact Details</span>
+        </div>
+        <button class="btn btn-icon" type="button" onclick="ArtifactDrawer.close()" aria-label="Close Artifact Inspector">✕</button>
+      </div>
+      <div class="drawer-tabs" role="tablist" aria-label="Artifact Details Tabs">
+        <button type="button" role="tab" aria-selected="true" class="drawer-tab active" data-tab="overview" onclick="ArtifactDrawer.setTab('overview')">Overview</button>
+        <button type="button" role="tab" aria-selected="false" class="drawer-tab" data-tab="spec" onclick="ArtifactDrawer.setTab('spec')">JSON Spec</button>
+        <button type="button" role="tab" aria-selected="false" class="drawer-tab" data-tab="ast" onclick="ArtifactDrawer.setTab('ast')">AST Conformance</button>
+      </div>
+      <div class="drawer-content" id="drawerContent">
+        <!-- Tab content rendered dynamically -->
+      </div>
+    </aside>
+  </div>
+
+  <!-- Search / Command Palette Modal (Cmd+K) -->
+  <div class="modal-backdrop" id="searchModal" role="dialog" aria-modal="true" aria-label="Search Command Palette" onclick="if(event.target===this)App.closeSearch()">
+    <div class="search-modal">
+      <div class="search-input-wrap">
+        <span aria-hidden="true">🔍</span>
+        <input type="text" class="search-input" placeholder="Search 31 skills, 7 phases, or statutory clauses..." aria-label="Search skills, phases, or statutory clauses" autofocus oninput="RegistryView.filterCategory(this.value)">
+        <button class="btn" type="button" style="padding:0.2rem 0.5rem" onclick="App.closeSearch()">ESC</button>
+      </div>
+      <div class="search-results">
+        <div class="search-item" tabindex="0" role="button" onclick="App.switchView('pipeline');PipelineView.inspectGap();App.closeSearch()">
+          <span>⚠️ <strong>Phase 4 Red Gap:</strong> Side-by-Side Dual Run Shadow Rail</span>
+          <span class="pill pill-gap">Decision</span>
+        </div>
+        <div class="search-item" tabindex="0" role="button" onclick="App.switchView('registry');App.closeSearch()">
+          <span>⚖️ <strong>zero-cent-drift-prover:</strong> Guaranteed $0.00 Balance Drift</span>
+          <span class="pill pill-fearless">Skill</span>
+        </div>
+        <div class="search-item" tabindex="0" role="button" onclick="App.switchView('storyline');App.closeSearch()">
+          <span>📖 <strong>Executive Storyline:</strong> 20 Read-Back Slides</span>
+          <span class="pill pill-fearless">Deck</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modular View Controllers -->
+  <script src="js/components/artifact-drawer.js"></script>
+  <script src="js/views/storyline-view.js"></script>
+  <script src="js/views/pipeline-view.js"></script>
+  <script src="js/views/registry-view.js"></script>
+  <script src="js/views/simulator-view.js"></script>
+  <script src="js/views/planning-view.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    // Accessibility & ARIA state synchronizer + WAI-ARIA tablist keyboard navigation
+    (function() {
+      const origSwitchView = window.App && window.App.switchView;
+      if (origSwitchView) {
+        window.App.switchView = function(viewName) {
+          origSwitchView.call(window.App, viewName);
+          document.querySelectorAll('.nav-sidebar [role="tab"]').forEach(tab => {
+            const isSelected = tab.dataset.view === viewName;
+            tab.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+            if (isSelected) {
+              const stage = document.getElementById('mainStage');
+              if (stage && tab.id) stage.setAttribute('aria-labelledby', tab.id);
+            }
+          });
+        };
+      }
+
+      // Arrow key navigation within vertical tablist
+      const tablist = document.querySelector('.nav-sidebar [role="tablist"]');
+      if (tablist) {
+        tablist.addEventListener('keydown', function(e) {
+          const tabs = Array.from(tablist.querySelectorAll('[role="tab"]'));
+          const idx = tabs.indexOf(document.activeElement);
+          if (idx === -1) return;
+          if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+            e.preventDefault();
+            const next = tabs[(idx + 1) % tabs.length];
+            next.focus();
+            next.click();
+          } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+            e.preventDefault();
+            const prev = tabs[(idx - 1 + tabs.length) % tabs.length];
+            prev.focus();
+            prev.click();
+          }
+        });
+      }
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === '?' && !['INPUT', 'TEXTAREA'].includes((e.target && e.target.tagName) || '')) {
+          e.preventDefault();
+          const modal = document.getElementById('contractModal');
+          if (modal) modal.classList.toggle('open');
+        }
+        if (e.key === 'Escape') {
+          const modal = document.getElementById('contractModal');
+          if (modal) modal.classList.remove('open');
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+%% Setup / Environment — source: zip arc1.pdf (document page 1)
+%% The development environment, toolchain, MCP surface and persistence layer.
+%% This material appears on no other page of the set.
+
+graph TB
+    ENG["<b>Engineering / Architecture team</b><br/><i>maintains the repo</i>"]
+
+    subgraph REPO["GitHub"]
+        GH["<b>GITHUB REPO</b>"]
+        SKILLS["<b>Skills Agent</b><br/><i>= Zip SDLC Principles</i>"]
+        GH --- SKILLS
+    end
+
+    subgraph DEVS["Developers"]
+        direction LR
+        D1["Dev 1"]
+        D2["Dev 2"]
+        D3["Dev 3"]
+    end
+
+    TOOLS["<b>Toolchain</b><br/>Antigravity · Antigravity CLI<br/>VS Code · gcloud · Terraform"]
+
+    subgraph GCP["Google Cloud"]
+        direction TB
+        GCPBOX["<b>GCP</b><br/>• Deploy infrastructure<br/>• Run tests"]
+        SQL[("<b>Cloud SQL</b><br/><i>scoring runs</i>")]
+        STORE[("<b>Storage</b><br/><i>artefacts storage</i>")]
+        GCPBOX -.-> SQL
+        GCPBOX -.-> STORE
+    end
+
+    subgraph MCP["Integration surface"]
+        direction TB
+        JIRA["<b>Jira MCP Server</b>"]
+        SLACK["<b>Slack</b>"]
+        CUSTOM["<b>Custom MCP</b>"]
+    end
+
+    ENG -->|push| GH
+    GH -->|pull| DEVS
+    DEVS --- TOOLS
+    DEVS --> GCP
+    GCP --- MCP
+
+    classDef team  fill:#FFF4E5,stroke:#F29900,stroke-width:2px,color:#3B2A00;
+    classDef repo  fill:#EAF2FF,stroke:#1A73E8,stroke-width:2px,color:#0B1F3B;
+    classDef gcp   fill:#E6F4EA,stroke:#137333,stroke-width:2px,color:#0A2E17;
+    classDef mcp   fill:#F3E8FF,stroke:#8430CE,stroke-width:2px,color:#2A0B3B;
+
+    class ENG,D1,D2,D3,TOOLS team;
+    class GH,SKILLS repo;
+    class GCPBOX,SQL,STORE gcp;
+    class JIRA,SLACK,CUSTOM mcp;

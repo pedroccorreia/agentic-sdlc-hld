@@ -1,0 +1,53 @@
+%% Agent definition, registry and rating model — source: scan page 2
+%% "(cardinality to be defined)" is an explicit open item — see PARKING_LOT.md PL-05.
+
+graph TB
+    subgraph AGENT["Agent definition"]
+        direction TB
+        DESC["<b>Description</b>"]
+        TECH["<b>Tech</b><br/>GKE · DATA · Agents<br/><i>* when to choose this</i>"]
+        DEPLOY["<b>Deployment</b><br/>local → cloud<br/><i>Skills · Scripts · Agents.MD</i><br/><i>github repo</i>"]
+    end
+
+    subgraph REG["Registry / plane"]
+        direction LR
+        A1["A1"]
+        A2["A2"]
+        A3["<b>A3</b>"]
+        A4["A4"]
+    end
+
+    NOTE["<b>Registry has a deterministic<br/>way of choosing agents</b>"]
+
+    subgraph RECORD["A3 — the per-agent record"]
+        direction TB
+        RD["<b>Description</b>"]
+        RU["<b>Use when</b><br/><i>the selection criterion</i>"]
+        RN["<b># of times deployed</b>"]
+        RS["<b>Successful runs</b>"]
+        RR["<b>Rating</b>"]
+    end
+
+    subgraph RATING["Rating — two sources"]
+        direction TB
+        QN["<b>Quantitative</b><br/><i>inferred from test bugs associated</i>"]
+        QL["<b>Qualitative</b><br/><i>user provided</i>"]
+    end
+
+    AGENT --> REG
+    REG --- NOTE
+    A3 ==> RECORD
+    RR ==> RATING
+
+    PA["<b>Project Assignment</b><br/><i>reads the registry to route tasks</i>"]
+    NOTE -.->|"routing table"| PA
+
+    classDef def    fill:#EAF2FF,stroke:#1A73E8,stroke-width:2px,color:#0B1F3B;
+    classDef reg    fill:#E6F4EA,stroke:#137333,stroke-width:2px,color:#0A2E17;
+    classDef rec    fill:#FFF4E5,stroke:#F29900,stroke-width:2px,color:#3B2A00;
+    classDef rate   fill:#F3E8FF,stroke:#8430CE,stroke-width:2px,color:#2A0B3B;
+
+    class DESC,TECH,DEPLOY def;
+    class A1,A2,A3,A4,NOTE,PA reg;
+    class RD,RU,RN,RS,RR rec;
+    class QN,QL rate;

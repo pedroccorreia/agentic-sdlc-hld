@@ -1,0 +1,25 @@
+%% The six stages with human gates — source: zip arc1.pdf (document page 1)
+%% This is the PROCESS view. The artifact view lives in 01-artifact-dependencies.mmd.
+%% Q.n markers are the seven numbered open questions on that page.
+%%
+%% NOTE: phase (4) Review is ATTESTED here — it was previously an inference.
+
+graph TB
+    S1["<b>(1) Specify</b><br/>IN: high level design → BRD<br/><i>converts business requirements into a tech spec</i><br/><i>checks documentation, implements arch principles</i> · Q.6"]
+    G1{{"👤 <b>PRD GO / NO-GO</b><br/><i>human gate</i>"}}
+    S2["<b>(2) Dispatch</b> · Q.3<br/><i>an agent gets assigned the task, opens the process</i><br/><b>* akin to a taxi dispatcher — best agent for the job</b><br/><i>might be a GKE or Data Agent</i>"]
+    S3["<b>(3) Generate</b> · Q.7<br/>IN: (A) reviewed PRD  (B) agent<br/><i>agents fleet works sequentially or in parallel</i> · Q.4<br/><i>kill switch — how to do it centrally</i> · Q.2<br/>OUT: build → unit test → handover"]
+    S4["<b>(4) Review</b><br/><i>reviews the Build Report and provides a score</i> · Q.5"]
+    G2{{"👤 <b>Score agent</b><br/><b>Feedback register</b><br/><b>Approve / Not approve</b> + reason"}}
+    S5["<b>(5) Verify</b><br/><i>autonomous agent stack runs:</i><br/>(a) Integration  (b) Load  (c) Adversarial"]
+    S6["<b>(6) Ship &amp; Observe</b><br/>🛑 <i>code is merged, sent to shadow gate testing</i>"]
+
+    S1 --> G1 --> S2 --> S3 --> S4 --> G2 --> S5 --> S6
+
+    classDef stage fill:#EAF2FF,stroke:#1A73E8,stroke-width:2px,color:#0B1F3B;
+    classDef gate  fill:#FFF4E5,stroke:#F29900,stroke-width:2.5px,color:#3B2A00;
+    classDef ship  fill:#E6F4EA,stroke:#137333,stroke-width:2px,color:#0A2E17;
+
+    class S1,S2,S3,S4,S5 stage;
+    class G1,G2 gate;
+    class S6 ship;
