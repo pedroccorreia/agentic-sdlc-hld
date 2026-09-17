@@ -4,8 +4,8 @@ set -e
 # Zip Agentic Factory Presentation Deployment Script
 # Usage: ./deploy.sh <PROJECT_ID> [REGION]
 
-PROJECT_ID=${1:-"ple-prototype"}
-REGION=${2:-"australia-southeast1"}
+PROJECT_ID=${1:-"pcorreia-salty-codfish"}
+REGION=${2:-"us-central1"}
 
 if [ -z "$PROJECT_ID" ]; then
   echo "Error: PROJECT_ID is required."
@@ -27,9 +27,9 @@ IMAGE_NAME="presentation-website"
 TAG="v$(git rev-parse --short HEAD 2>/dev/null || echo 'release')-$(date +%Y%m%d%H%M%S)"
 IMAGE_URI="${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPO_NAME}/${IMAGE_NAME}:${TAG}"
 
-# 1. Enable Artifact Registry & Cloud Build / Cloud Run APIs
-echo "[1/4] Enabling required GCP service APIs..."
-gcloud services enable artifactregistry.googleapis.com run.googleapis.com cloudbuild.googleapis.com --project="$PROJECT_ID"
+# 1. Enable Artifact Registry & Cloud Build / Cloud Run APIs (continue if already enabled)
+echo "[1/4] Checking required GCP service APIs..."
+gcloud services enable artifactregistry.googleapis.com run.googleapis.com cloudbuild.googleapis.com --project="$PROJECT_ID" 2>/dev/null || echo "APIs already enabled or managed externally."
 
 # 2. Ensure Artifact Registry Repository exists
 echo "[2/4] Ensuring Artifact Registry repository exists..."
