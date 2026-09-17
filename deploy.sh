@@ -48,22 +48,22 @@ cd "$PRESENTATION_DIR"
 gcloud builds submit . \
   --config=cloudbuild.yaml \
   --substitutions=_IMAGE_URI="$IMAGE_URI" \
+  --suppress-logs \
   --project="$PROJECT_ID"
 
-# 4. Run Terraform to deploy Cloud Run
-echo "[4/4] Deploying Cloud Run service with Terraform..."
-cd "$TERRAFORM_DIR"
-terraform init
-terraform apply -auto-approve \
-  -var="project_id=$PROJECT_ID" \
-  -var="region=$REGION" \
-  -var="artifact_registry_repo_id=$REPO_NAME" \
-  -var="image_name=$IMAGE_NAME" \
-  -var="image_tag=$TAG"
+# 4. Deploy to Cloud Run with Direct VPC Egress (required by Org Policy constraints/run.allowedVPCEgress)
+echo "[4/4] Deploying new revision to Cloud Run..."
+gcloud run deploy zip-agentic-factory-presentation \
+  --image="$IMAGE_URI" \
+  --project="$PROJECT_ID" \
+  --region="$REGION" \
+  --network="zip-vpc" \
+  --subnet="zip-subnet" \
+  --vpc-egress="all-traffic" \
+  --quiet
 
 echo "=========================================================="
 echo " Deployment Complete!"
 echo " Presentation Website Public URL:"
-terraform output -raw cloud_run_url
-echo ""
+gcloud run services describe zip-agentic-factory-presentation --project="$PROJECT_ID" --region="$REGION" --format="value(status.url)"
 echo "=========================================================="
